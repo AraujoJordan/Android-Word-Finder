@@ -34,12 +34,17 @@ class CharacterController(private val boardEvents: BoardListener) {
     fun setWords() {
         allWords.addAll(
             arrayOf(
-                "Swift".toUpperCase(Locale.US),
-                "Kotlin".toUpperCase(Locale.US),
-                "ObjectiveC".toUpperCase(Locale.US),
-                "Variable".toUpperCase(Locale.US),
-                "Java".toUpperCase(Locale.US),
-                "Mobile".toUpperCase(Locale.US)
+                "Swift",
+                "Kotlin",
+                "ObjectiveC",
+                "Variable",
+                "Java",
+                "Mobile",
+                "Hire",
+                "Shopify",
+                "React",
+                "Native",
+                "Jetpack"
             )
         )
     }

@@ -1,23 +1,40 @@
 package com.araujo.jordan.wordfindify
 
+import android.util.Log
 import android.widget.TextView
-import java.util.*
 import kotlin.random.Random
 
 class BoardBuilder(val board: ArrayList<ArrayList<TextView>>) {
 
+    private var wordsAvailable: ArrayList<String> = ArrayList()
     private val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     private val width = board.size
     private val height = board[0].size
 
+    var type = 0
+
+    fun reset(word: Array<String>) {
+        wordsAvailable = ArrayList()
+        wordsAvailable.addAll(word)
+        for (w in 0 until width)
+            for (h in 0 until height)
+                board[w][h].text = ""
+    }
+
     fun build(word: Array<String>) {
 
-        val wordsAvailable = ArrayList<String>()
-        wordsAvailable.addAll(word)
+        reset(word)
 
+
+        var count = 0
         while (wordsAvailable.size > 0) {
+            count++
+            if (count > 1000) {
+                reset(word)
+                count = 0
+            }
             val wordToAdd = wordsAvailable.first()
-            if (Random.nextBoolean()) {
+            if (type == 0) {
                 canAddVertically(wordToAdd)?.let { arrayOfAvailablePosition ->
                     addVertically(wordToAdd, arrayOfAvailablePosition)
                     wordsAvailable.removeAt(0)
@@ -30,6 +47,9 @@ class BoardBuilder(val board: ArrayList<ArrayList<TextView>>) {
             }
         }
 
+        board.forEach { it.forEach { Log.d("BoardBuilder", it.text.toString()) } }
+
+
         for (w in 0 until width)
             for (h in 0 until height)
                 if (board[w][h].text.isEmpty())
@@ -37,6 +57,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<TextView>>) {
     }
 
     private fun canAddVertically(wordToPut: String): Array<Int>? {
+        Log.d("BoardBuilder", "canAddVertically() ")
 
         val posX = Random.nextInt(0, width - 1)
         val posY = Random.nextInt(0, height - 1)
@@ -57,11 +78,15 @@ class BoardBuilder(val board: ArrayList<ArrayList<TextView>>) {
     }
 
     private fun addVertically(wordToPut: String, positionToPut: Array<Int>) {
-        for (offset in wordToPut.indices)
-            board[positionToPut[0] + offset][positionToPut[1]]
+        Log.d("BoardBuilder", "addVertically() $wordToPut")
+        type = 1
+        for (offset in wordToPut.indices) {
+            board[positionToPut[0] + offset][positionToPut[1]].text = wordToPut[offset].toString()
+        }
     }
 
     private fun canAddHorizontally(wordToPut: String): Array<Int>? {
+        Log.d("BoardBuilder", "canAddHorizontally() ")
 
         val posX = Random.nextInt(0, width - 1)
         val posY = Random.nextInt(0, height - 1)
@@ -82,8 +107,12 @@ class BoardBuilder(val board: ArrayList<ArrayList<TextView>>) {
     }
 
     private fun addHorizontally(wordToPut: String, positionToPut: Array<Int>) {
+        Log.d("BoardBuilder", "addHorizontally() ")
+
+        type = 0
+
         for (offset in wordToPut.indices)
-            board[positionToPut[0]][positionToPut[1] + offset]
+            board[positionToPut[0]][positionToPut[1] + offset].text = wordToPut[offset].toString()
     }
 
     var TextView.char
