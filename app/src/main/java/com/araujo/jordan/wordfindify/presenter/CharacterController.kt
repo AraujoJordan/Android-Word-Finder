@@ -1,12 +1,11 @@
-package com.araujo.jordan.wordfindify
+package com.araujo.jordan.wordfindify.presenter
 
-import android.util.Log
-import android.widget.TextView
+import com.araujo.jordan.wordfindify.models.BoardChararacter
 import java.util.*
 
 class CharacterController(private val boardEvents: BoardListener) {
 
-    var board = ArrayList<ArrayList<TextView>>()
+    var board = ArrayList<ArrayList<BoardChararacter>>()
 
     private var wordsAvailable = ArrayList<String>()
     private var allWords = ArrayList<String>()
@@ -14,7 +13,7 @@ class CharacterController(private val boardEvents: BoardListener) {
     /**
      * Check selection for some word
      */
-    fun checkForWord(from: TextView, to: TextView) {
+    fun checkForWord(from: BoardChararacter, to: BoardChararacter) {
         val charactersBetween = getCharactersBetween(from, to)
 
         val wordSelected = getString(charactersBetween)
@@ -39,12 +38,13 @@ class CharacterController(private val boardEvents: BoardListener) {
                 "ObjectiveC",
                 "Variable",
                 "Java",
-                "Mobile",
-                "Hire",
-                "Shopify",
-                "React",
-                "Native",
-                "Jetpack"
+                "Mobile"
+                //adding more words
+//                "Hire",
+//                "Shopify",
+//                "React",
+//                "Native",
+//                "Jetpack"
             )
         )
     }
@@ -56,7 +56,6 @@ class CharacterController(private val boardEvents: BoardListener) {
         setWords()
         wordsAvailable.clear()
         wordsAvailable.addAll(allWords)
-        Log.e("yolo", "WORDS: " + wordsAvailable.toString())
         BoardBuilder(board).build(wordsAvailable.toTypedArray())
     }
 
@@ -72,35 +71,35 @@ class CharacterController(private val boardEvents: BoardListener) {
     /**
      * Get string from characters selected
      */
-    private fun getString(wordSelected: ArrayList<TextView>): String {
+    private fun getString(wordSelected: ArrayList<BoardChararacter>): String {
         var word = ""
         wordSelected.forEach {
-            word += it.text.toString()
+            word += it.char.toString()
         }
         return word
     }
 
-    private fun isALine(wordSelected: ArrayList<TextView>): Boolean {
+    private fun isALine(wordSelected: ArrayList<BoardChararacter>): Boolean {
         return isHorizontalLine(wordSelected) ||
                 isVerticalLine(wordSelected) ||
                 isDiagonalLine(wordSelected)
     }
 
-    private fun isDiagonalLine(wordSelected: ArrayList<TextView>): Boolean {
-        val firstChar: Array<Int> = wordSelected.first().tag as Array<Int>
-        val lastChar: Array<Int> = wordSelected.last().tag as Array<Int>
+    private fun isDiagonalLine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+        val firstChar: Array<Int> = wordSelected.first().position
+        val lastChar: Array<Int> = wordSelected.last().position
         return (lastChar[0] - firstChar[0]) == (lastChar[1] - firstChar[1])
     }
 
-    private fun isVerticalLine(wordSelected: ArrayList<TextView>): Boolean {
-        val firstChar: Array<Int> = wordSelected.first().tag as Array<Int>
-        val lastChar: Array<Int> = wordSelected.last().tag as Array<Int>
+    private fun isVerticalLine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+        val firstChar: Array<Int> = wordSelected.first().position
+        val lastChar: Array<Int> = wordSelected.last().position
         return lastChar[0] == firstChar[0] && (lastChar[1] - firstChar[1]) != 0
     }
 
-    private fun isHorizontalLine(wordSelected: ArrayList<TextView>): Boolean {
-        val firstChar: Array<Int> = wordSelected.first().tag as Array<Int>
-        val lastChar: Array<Int> = wordSelected.last().tag as Array<Int>
+    private fun isHorizontalLine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+        val firstChar: Array<Int> = wordSelected.first().position
+        val lastChar: Array<Int> = wordSelected.last().position
         return lastChar[1] == firstChar[1] && (lastChar[0] - firstChar[0]) != 0
     }
 
@@ -109,17 +108,14 @@ class CharacterController(private val boardEvents: BoardListener) {
      * Beware, this can have a reversed word
      */
     private fun getCharactersBetween(
-        from: TextView,
-        to: TextView
-    ): ArrayList<TextView> {
-        val positionFrom = from.tag as Array<Int>
-        val positionTo = to.tag as Array<Int>
+        from: BoardChararacter,
+        to: BoardChararacter
+    ): ArrayList<BoardChararacter> {
+        val positionFrom = from.position
+        val positionTo = to.position
 
         var xFrom: Int
-        var xTo: Int
-        var yFrom: Int
-        var yTo: Int
-
+        val xTo: Int
         if (positionFrom[0] <= positionTo[0]) {
             xFrom = positionFrom[0]
             xTo = positionTo[0]
@@ -128,6 +124,8 @@ class CharacterController(private val boardEvents: BoardListener) {
             xTo = positionFrom[0]
         }
 
+        var yFrom: Int
+        val yTo: Int
         if (positionFrom[1] <= positionTo[1]) {
             yFrom = positionFrom[1]
             yTo = positionTo[1]
@@ -136,7 +134,7 @@ class CharacterController(private val boardEvents: BoardListener) {
             yTo = positionFrom[1]
         }
 
-        val charactersBetween = ArrayList<TextView>()
+        val charactersBetween = ArrayList<BoardChararacter>()
 
         charactersBetween.add(from)
         while (xFrom < xTo && yFrom < yTo) {
@@ -154,5 +152,5 @@ class CharacterController(private val boardEvents: BoardListener) {
 
 interface BoardListener {
     fun onVictory() {}
-    fun removeWord(charactersBetween: ArrayList<TextView>) {}
+    fun removeWord(charactersBetween: ArrayList<BoardChararacter>) {}
 }
