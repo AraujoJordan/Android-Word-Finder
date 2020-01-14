@@ -1,8 +1,6 @@
 package com.araujo.jordan.wordfindify.views
 
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.araujo.jordan.wordfindify.R
 import com.araujo.jordan.wordfindify.models.BoardChararacter
@@ -10,11 +8,12 @@ import com.araujo.jordan.wordfindify.presenter.BoardListener
 import com.araujo.jordan.wordfindify.presenter.CharacterController
 import kotlinx.android.synthetic.main.board_activity.*
 
+
 class BoardActivity : AppCompatActivity(),
-    BoardListener, View.OnTouchListener {
+    BoardListener {
 
     private var boardController = CharacterController(this)
-    private val boardAdapter by lazy { BoardAdapter(this) }
+    private val boardAdapter by lazy { BoardAdapter(this, boardController) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +23,7 @@ class BoardActivity : AppCompatActivity(),
         boardController.board = buildBoard()
         boardController.reset()
         boardAdapter.updateGrid(boardController.board)
+        activityBoardGrid.getDrawingRect(boardController.boardRect)
     }
 
     private fun buildBoard(): ArrayList<ArrayList<BoardChararacter>> {
@@ -35,8 +35,6 @@ class BoardActivity : AppCompatActivity(),
             }
             grid.add(line)
         }
-
-
         return grid
     }
 
@@ -46,9 +44,5 @@ class BoardActivity : AppCompatActivity(),
 
     override fun removeWord(charactersBetween: ArrayList<BoardChararacter>) {
 
-    }
-
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        return false
     }
 }
