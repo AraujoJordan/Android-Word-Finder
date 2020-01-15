@@ -3,11 +3,15 @@ package com.araujo.jordan.wordfindify.views
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.araujo.jordan.wordfindify.R
 import com.araujo.jordan.wordfindify.models.BoardChararacter
 import com.araujo.jordan.wordfindify.presenter.BoardPresenter
+import com.araujo.jordan.wordfindify.utils.bounceAnimation
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectReceiver
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectTouchListener
 import com.araujo.jordan.wordfindify.utils.dragListener.Mode
@@ -95,9 +99,10 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
 
         fun bind(boardChararacter: BoardChararacter) {
             boardElement.text = boardChararacter.char
-            if (boardChararacter.selected)
+            if (boardChararacter.selected) {
                 boardElement.setTextColor(removedLetterColor)
-            else
+                bounceAnimation(boardElement)
+            } else
                 boardElement.setTextColor(if (boardChararacter.isOnSelection) selectedColor else unselectedColor)
 
             if (itemView.tag == null) {

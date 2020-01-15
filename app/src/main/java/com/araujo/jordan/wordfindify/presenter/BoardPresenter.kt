@@ -24,7 +24,11 @@ class BoardPresenter(private val boardEvents: BoardListener) {
     private fun containsAvailable(word: String) =
         availableWords().indexOfFirst { it.word == word } > -1
 
-    private fun remove(word: String) = allWords.removeAt(allWords.indexOfFirst { it.word == word })
+    private fun remove(word: String) {
+        val wordIndex = allWords.indexOfFirst { it.word == word }
+        if (wordIndex >= 0)
+            allWords[wordIndex].strikethrough = true
+    }
 
     /**
      * Check selection for some word
@@ -36,39 +40,42 @@ class BoardPresenter(private val boardEvents: BoardListener) {
             return
         }
 
-
         var word = ""
         selectingWord.forEach { word += it.char }
 
-
-        if (isALine(selectingWord) && containsAvailable(word))
+        if (isALine(selectingWord) && containsAvailable(word)) {
             acceptWord(selectingWord)
+            boardEvents.selectingWord(selectingWord, true)
+        } else {
+            boardEvents.selectingWord(selectingWord)
+        }
+        deselectWord()
+    }
 
+    private fun deselectWord() {
         selectingWord.forEach {
             it.isOnSelection = false
         }
         selectingWord.clear()
-        boardEvents.selectingWord(selectingWord)
     }
 
-    fun acceptWord(
+    private fun acceptWord(
         selectingWord: ArrayList<BoardChararacter>
     ) {
         val wordSelected = getString(selectingWord)
-
         removeWord(wordSelected)
-        boardEvents.removeWord(selectingWord)
+        boardEvents.updateWordList(allWords)
 
         selectingWord.forEach {
             it.selected = true
         }
 
-        if (availableWords().size == 0) {
+        if (availableWords().size == 0)
             boardEvents.onVictory()
-        }
+        deselectWord()
     }
 
-    fun setWords() {
+    private fun setWords() {
         allWords.addAll(
             arrayOf(
                 WordAvailable("Swift"),
@@ -77,8 +84,7 @@ class BoardPresenter(private val boardEvents: BoardListener) {
                 WordAvailable("Variable"),
                 WordAvailable("Java"),
                 WordAvailable("Mobile")
-                //adding more words
-//                "Hire",
+//                "HireMe",
 //                "Shopify",
 //                "React",
 //                "Native",
@@ -87,16 +93,11 @@ class BoardPresenter(private val boardEvents: BoardListener) {
         )
     }
 
-    /**
-     * Reset board with random
-     */
     fun reset() {
+        allWords.clear()
         setWords()
-        availableWords().clear()
-        allWords.addAll(allWords)
         BoardBuilder(board).build(availableWords().toTypedArray())
     }
-
 
     private fun removeWord(wordToRemove: String) {
         if (containsAvailable(wordToRemove))
@@ -117,19 +118,6 @@ class BoardPresenter(private val boardEvents: BoardListener) {
     }
 
     private fun isALine(wordSelected: ArrayList<BoardChararacter>): Boolean {
-
-        Log.d(
-            "CharController",
-            "isALine isHorizontalLine(wordSelected) " + isHorizontalLine(wordSelected)
-        )
-        Log.d(
-            "CharController",
-            "isALine isVerticalLine(wordSelected) " + isVerticalLine(wordSelected)
-        )
-        Log.d(
-            "CharController",
-            "isALine isDiagonalLine(wordSelected) " + isDiagonal(wordSelected)
-        )
 
         return isHorizontalLine(wordSelected) ||
                 isVerticalLine(wordSelected) ||
@@ -172,6 +160,6 @@ class BoardPresenter(private val boardEvents: BoardListener) {
 
 interface BoardListener {
     fun onVictory() {}
-    fun removeWord(charactersBetween: ArrayList<BoardChararacter>) {}
-    fun selectingWord(selectingWord: ArrayList<BoardChararacter>) {}
+    fun updateWordList(words: ArrayList<WordAvailable>) {}
+    fun selectingWord(selectingWord: ArrayList<BoardChararacter>,acceptedWord:Boolean = false) {}
 }
