@@ -23,7 +23,6 @@ class BoardActivity : AppCompatActivity(),
         boardController.board = buildBoard()
         boardController.reset()
         boardAdapter.updateGrid(boardController.board)
-        activityBoardGrid.getDrawingRect(boardController.boardRect)
     }
 
     private fun buildBoard(): ArrayList<ArrayList<BoardChararacter>> {
@@ -37,6 +36,13 @@ class BoardActivity : AppCompatActivity(),
         }
         return grid
     }
+
+    override fun selectingWord(selectingWord: java.util.ArrayList<BoardChararacter>) {
+        var word = ""
+        selectingWord?.forEach { word += it.char }
+        activityBoardSelectedWord.text = word
+    }
+
 
     override fun onVictory() {
 

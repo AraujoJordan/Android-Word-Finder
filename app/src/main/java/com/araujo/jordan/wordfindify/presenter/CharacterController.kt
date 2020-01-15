@@ -1,24 +1,24 @@
 package com.araujo.jordan.wordfindify.presenter
 
-import android.graphics.Rect
 import android.util.Log
 import com.araujo.jordan.wordfindify.models.BoardChararacter
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 class CharacterController(private val boardEvents: BoardListener) {
 
     var board = ArrayList<ArrayList<BoardChararacter>>()
 
-    private var wordsAvailable = ArrayList<String>()
-    private var allWords = ArrayList<String>()
-    var boardRect = Rect()
-
+    var wordsAvailable = ArrayList<String>()
+    var allWords = ArrayList<String>()
     var selectingWord = ArrayList<BoardChararacter>()
 
     fun addCharacter(character: BoardChararacter) {
         if (!selectingWord.contains(character)) {
             Log.d("CharacterController", "Adding: $character")
             selectingWord.add(character)
+            boardEvents.selectingWord(selectingWord)
         }
     }
 
@@ -28,44 +28,31 @@ class CharacterController(private val boardEvents: BoardListener) {
     fun checkForWord() {
         if (selectingWord.isEmpty() || selectingWord.size == 1) {
             selectingWord.clear()
+            boardEvents.selectingWord(selectingWord)
             return
         }
 
         var word = ""
         selectingWord.forEach { word += it.char }
-//        Log.d("CharacterController", "checkForWord() $word")
 
 
-        val from = selectingWord.first()
-        val to = selectingWord.last()
-
-        val charactersBetween = getCharactersBetween(from, to)
-
-        val wordSelected = getString(charactersBetween)
-        Log.d("CharacterController", "checkForWord() $wordSelected")
-
-        if (wordsAvailable.contains(getString(getCharactersBetween(from, to))) ||
-            wordsAvailable.contains(getString(getCharactersBetween(to, from)).reversed())
-        ) acceptWord(from, to)
-        if (wordsAvailable.contains(getString(getCharactersBetween(to, from))) ||
-            wordsAvailable.contains(getString(getCharactersBetween(to, from)).reversed())
-        ) acceptWord(to, from)
+        if (isALine(selectingWord) && wordsAvailable.contains(word))
+            acceptWord(selectingWord)
 
         selectingWord.forEach {
             it.isOnSelection = false
         }
         selectingWord.clear()
+        boardEvents.selectingWord(selectingWord)
     }
 
     fun acceptWord(
-        from: BoardChararacter,
-        to: BoardChararacter
+        selectingWord: ArrayList<BoardChararacter>
     ) {
-        val charactersBetween = getCharactersBetween(from, to)
-        val wordSelected = getString(charactersBetween)
+        val wordSelected = getString(selectingWord)
 
         removeWord(wordSelected)
-        boardEvents.removeWord(charactersBetween)
+        boardEvents.removeWord(selectingWord)
 
         selectingWord.forEach {
             it.selected = true
@@ -125,46 +112,62 @@ class CharacterController(private val boardEvents: BoardListener) {
         return word
     }
 
-    /**
-     * Get characters between initial position and end position.
-     * Beware, this can have a reversed word
-     */
-    fun getCharactersBetween(
-        from: BoardChararacter,
-        to: BoardChararacter
-    ): ArrayList<BoardChararacter> {
+    private fun isALine(wordSelected: ArrayList<BoardChararacter>): Boolean {
 
-//        if(from.position[0]>to.position[0] || from.position[1]>to.position[1])
-//            getCharactersBetween(to,from)
+        Log.d(
+            "CharController",
+            "isALine isHorizontalLine(wordSelected) " + isHorizontalLine(wordSelected)
+        )
+        Log.d(
+            "CharController",
+            "isALine isVerticalLine(wordSelected) " + isVerticalLine(wordSelected)
+        )
+        Log.d(
+            "CharController",
+            "isALine isDiagonalLine(wordSelected) " + isDiagonal(wordSelected)
+        )
 
-
-        var yFrom = kotlin.math.min(from.position[0], to.position[0])
-        val yTo: Int = kotlin.math.max(from.position[0], to.position[0])
-        var xFrom = kotlin.math.min(from.position[1], to.position[1])
-        val xTo = kotlin.math.max(from.position[1], to.position[1])
-
-        val charactersBetween = ArrayList<BoardChararacter>()
-
-        charactersBetween.add(from)
-
-
-        while (xFrom < xTo || yFrom < yTo) {
-
-            Log.d("Logsa", "$xFrom $yFrom $xTo $yTo")
-            if (xFrom < xTo)
-                xFrom++
-            if (yFrom < yTo)
-                yFrom++
-            charactersBetween.add(board[xFrom][yFrom])
-
-        }
-
-        return charactersBetween
+        return isHorizontalLine(wordSelected) ||
+                isVerticalLine(wordSelected) ||
+                isDiagonal(wordSelected)
     }
+
+    private fun isDiagonal(wordSelected: ArrayList<BoardChararacter>): Boolean {
+        val distXY = (max(wordSelected.first().position[0], wordSelected.last().position[0]) -
+                min(wordSelected.first().position[0], wordSelected.last().position[0]))
+        return (distXY ==
+                (max(wordSelected.first().position[1], wordSelected.last().position[1]) -
+                        min(wordSelected.first().position[1], wordSelected.last().position[1]))) &&
+                wordSelected.size - 1 == distXY
+    }
+
+    private fun isHorizontalLine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+        var last = wordSelected.first()
+        wordSelected.forEach {
+            if (last != it) {
+                if (it.position[0] != last.position[0] || kotlin.math.abs(it.position[1] - last.position[1]) != 1) return false
+                last = it
+            }
+        }
+        return true
+    }
+
+    private fun isVerticalLine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+        var last = wordSelected.first()
+        wordSelected.forEach {
+            if (last != it) {
+                if (it.position[1] != last.position[1] || kotlin.math.abs(it.position[0] - last.position[0]) != 1) return false
+                last = it
+            }
+        }
+        return true
+    }
+
 
 }
 
 interface BoardListener {
     fun onVictory() {}
     fun removeWord(charactersBetween: ArrayList<BoardChararacter>) {}
+    fun selectingWord(selectingWord: ArrayList<BoardChararacter>) {}
 }

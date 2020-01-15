@@ -13,7 +13,7 @@ import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectTouchListener
 import com.araujo.jordan.wordfindify.utils.dragListener.Mode
 import kotlinx.android.synthetic.main.item_board.view.*
 
-class BoardAdapter(context: Context, val controller: CharacterController) :
+class BoardAdapter(context: Context, private val controller: CharacterController) :
     RecyclerView.Adapter<BoardAdapter.ViewHolder>(), DragSelectReceiver {
 
     var grid = ArrayList<ArrayList<BoardChararacter>>()
@@ -31,7 +31,6 @@ class BoardAdapter(context: Context, val controller: CharacterController) :
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.addOnItemTouchListener(touchListener)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -53,7 +52,7 @@ class BoardAdapter(context: Context, val controller: CharacterController) :
         grid[index % 10][if (index < 10) 0 else index / 10].isOnSelection
 
     override fun setSelected(index: Int, selected: Boolean) {
-        grid[index % 10][if (index < 10) 0 else index / 10].isOnSelection = true
+        grid[index % 10][index / 10].isOnSelection = true
         controller.addCharacter(grid[index % 10][if (index < 10) 0 else index / 10])
 //        grid.forEach {
 //            it.forEach { letter ->
