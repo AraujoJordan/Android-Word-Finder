@@ -6,17 +6,32 @@ import com.araujo.jordan.wordfindify.models.WordAvailable
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * Designed and developed by Jordan Lira (@AraujoJordan)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 class BoardPresenter(private val boardEvents: BoardListener) {
 
     var board = ArrayList<ArrayList<BoardChararacter>>()
     var allWords = ArrayList<WordAvailable>()
-    var selectingWord = ArrayList<BoardChararacter>()
+    var selectedWord = ArrayList<BoardChararacter>()
 
     fun addCharacter(character: BoardChararacter) {
-        if (!selectingWord.contains(character)) {
+        if (!selectedWord.contains(character)) {
             Log.d("CharacterController", "Adding: $character")
-            selectingWord.add(character)
-            boardEvents.selectingWord(selectingWord)
+            selectedWord.add(character)
+            boardEvents.updateSelectedWord(selectedWord)
         }
     }
 
@@ -34,29 +49,29 @@ class BoardPresenter(private val boardEvents: BoardListener) {
      * Check selection for some word
      */
     fun checkForWord() {
-        if (selectingWord.isEmpty() || selectingWord.size == 1) {
-            selectingWord.clear()
-            boardEvents.selectingWord(selectingWord)
+        if (selectedWord.isEmpty() || selectedWord.size == 1) {
+            selectedWord.clear()
+            boardEvents.updateSelectedWord(selectedWord)
             return
         }
 
         var word = ""
-        selectingWord.forEach { word += it.char }
+        selectedWord.forEach { word += it.char }
 
-        if (isALine(selectingWord) && containsAvailable(word)) {
-            acceptWord(selectingWord)
-            boardEvents.selectingWord(selectingWord, true)
+        if (isALine(selectedWord) && containsAvailable(word)) {
+            acceptWord(selectedWord)
+            boardEvents.updateSelectedWord(selectedWord, true)
         } else {
-            boardEvents.selectingWord(selectingWord)
+            boardEvents.updateSelectedWord(selectedWord)
         }
         deselectWord()
     }
 
     private fun deselectWord() {
-        selectingWord.forEach {
+        selectedWord.forEach {
             it.isOnSelection = false
         }
-        selectingWord.clear()
+        selectedWord.clear()
     }
 
     private fun acceptWord(
@@ -94,9 +109,9 @@ class BoardPresenter(private val boardEvents: BoardListener) {
     }
 
     fun reset() {
-        allWords.clear()
-        setWords()
-        BoardBuilder(board).build(availableWords().toTypedArray())
+        if(allWords.isEmpty()) setWords()
+        allWords.forEach { it.strikethrough = false }
+        BoardBuilder(board).build(allWords.toTypedArray())
     }
 
     private fun removeWord(wordToRemove: String) {
@@ -161,5 +176,5 @@ class BoardPresenter(private val boardEvents: BoardListener) {
 interface BoardListener {
     fun onVictory() {}
     fun updateWordList(words: ArrayList<WordAvailable>) {}
-    fun selectingWord(selectingWord: ArrayList<BoardChararacter>,acceptedWord:Boolean = false) {}
+    fun updateSelectedWord(selectingWord: ArrayList<BoardChararacter>, acceptedWord:Boolean = false) {}
 }
