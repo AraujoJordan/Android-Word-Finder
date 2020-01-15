@@ -5,24 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.araujo.jordan.wordfindify.R
 import com.araujo.jordan.wordfindify.models.BoardChararacter
 import com.araujo.jordan.wordfindify.presenter.BoardListener
-import com.araujo.jordan.wordfindify.presenter.CharacterController
+import com.araujo.jordan.wordfindify.presenter.BoardPresenter
 import kotlinx.android.synthetic.main.board_activity.*
 
 
 class BoardActivity : AppCompatActivity(),
     BoardListener {
 
-    private var boardController = CharacterController(this)
-    private val boardAdapter by lazy { BoardAdapter(this, boardController) }
+    private var boardPresenter = BoardPresenter(this)
+    private val boardAdapter by lazy { BoardAdapter(this, boardPresenter) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.board_activity)
 
         activityBoardGrid.adapter = boardAdapter
-        boardController.board = buildBoard()
-        boardController.reset()
-        boardAdapter.updateGrid(boardController.board)
+        boardPresenter.board = buildBoard()
+        boardPresenter.reset()
+        boardAdapter.updateGrid(boardPresenter.board)
     }
 
     private fun buildBoard(): ArrayList<ArrayList<BoardChararacter>> {

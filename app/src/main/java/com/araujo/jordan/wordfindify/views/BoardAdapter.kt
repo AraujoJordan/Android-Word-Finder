@@ -7,13 +7,13 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.araujo.jordan.wordfindify.R
 import com.araujo.jordan.wordfindify.models.BoardChararacter
-import com.araujo.jordan.wordfindify.presenter.CharacterController
+import com.araujo.jordan.wordfindify.presenter.BoardPresenter
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectReceiver
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectTouchListener
 import com.araujo.jordan.wordfindify.utils.dragListener.Mode
 import kotlinx.android.synthetic.main.item_board.view.*
 
-class BoardAdapter(context: Context, private val controller: CharacterController) :
+class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
     RecyclerView.Adapter<BoardAdapter.ViewHolder>(), DragSelectReceiver {
 
     var grid = ArrayList<ArrayList<BoardChararacter>>()
@@ -43,7 +43,7 @@ class BoardAdapter(context: Context, private val controller: CharacterController
 
     override fun isIndexSelectable(index: Int) = true
     override fun releaseSelection() {
-        controller.checkForWord()
+        presenter.checkForWord()
         notifyDataSetChanged()
         touchListener.setIsActive(true)
     }
@@ -53,7 +53,7 @@ class BoardAdapter(context: Context, private val controller: CharacterController
 
     override fun setSelected(index: Int, selected: Boolean) {
         grid[index % 10][index / 10].isOnSelection = true
-        controller.addCharacter(grid[index % 10][if (index < 10) 0 else index / 10])
+        presenter.addCharacter(grid[index % 10][if (index < 10) 0 else index / 10])
 //        grid.forEach {
 //            it.forEach { letter ->
 //                letter.isOnSelection = false

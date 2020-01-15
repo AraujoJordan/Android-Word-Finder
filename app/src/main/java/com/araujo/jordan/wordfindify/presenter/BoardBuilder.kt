@@ -2,11 +2,12 @@ package com.araujo.jordan.wordfindify.presenter
 
 import android.util.Log
 import com.araujo.jordan.wordfindify.models.BoardChararacter
+import com.araujo.jordan.wordfindify.models.WordAvailable
 import kotlin.random.Random
 
 class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
 
-    private var wordsAvailable: ArrayList<String> = ArrayList()
+    private var wordsAvailable: ArrayList<WordAvailable> = ArrayList()
     private val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     private val width = board.size
     private val height = board.size
@@ -17,7 +18,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * Reset board and word list to be added
      * @param wordList list of words to be added
      */
-    fun reset(wordList: Array<String>) {
+    fun reset(wordList: Array<WordAvailable>) {
         wordsAvailable = ArrayList()
         wordsAvailable.addAll(wordList.toList().shuffled())
         for (w in 0 until width)
@@ -25,10 +26,10 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
                 board[w][h].char = ""
     }
 
-    fun build(word: Array<String>) {
+    fun build(wordList: Array<WordAvailable>) {
 
         //clear previously board
-        reset(word)
+        reset(wordList)
 
         //add words in board
         var attempt = 0
@@ -36,13 +37,13 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
 
             //if it's 1000 attempts to fill the board, try another configuration
             if (attempt++ > 1000) {
-                reset(word)
+                reset(wordList)
                 attempt = 0
             }
 
             //Add an word in the board. Can be reversed (50%)
             val wordToAdd =
-                if (Random.nextBoolean()) wordsAvailable.first() else wordsAvailable.first().reversed()
+                if (Random.nextBoolean()) wordsAvailable.first().word else wordsAvailable.first().word.reversed()
             when (type) {
                 Orientation.VERTICAL -> {
                     canAddVertically(wordToAdd)?.let { arrayOfAvailablePosition ->

@@ -2,16 +2,14 @@ package com.araujo.jordan.wordfindify.presenter
 
 import android.util.Log
 import com.araujo.jordan.wordfindify.models.BoardChararacter
-import java.util.*
+import com.araujo.jordan.wordfindify.models.WordAvailable
 import kotlin.math.max
 import kotlin.math.min
 
-class CharacterController(private val boardEvents: BoardListener) {
+class BoardPresenter(private val boardEvents: BoardListener) {
 
     var board = ArrayList<ArrayList<BoardChararacter>>()
-
-    var wordsAvailable = ArrayList<String>()
-    var allWords = ArrayList<String>()
+    var allWords = ArrayList<WordAvailable>()
     var selectingWord = ArrayList<BoardChararacter>()
 
     fun addCharacter(character: BoardChararacter) {
@@ -21,6 +19,12 @@ class CharacterController(private val boardEvents: BoardListener) {
             boardEvents.selectingWord(selectingWord)
         }
     }
+
+    private fun availableWords() = ArrayList(allWords.filter { !it.strikethrough })
+    private fun containsAvailable(word: String) =
+        availableWords().indexOfFirst { it.word == word } > -1
+
+    private fun remove(word: String) = allWords.removeAt(allWords.indexOfFirst { it.word == word })
 
     /**
      * Check selection for some word
@@ -32,11 +36,12 @@ class CharacterController(private val boardEvents: BoardListener) {
             return
         }
 
+
         var word = ""
         selectingWord.forEach { word += it.char }
 
 
-        if (isALine(selectingWord) && wordsAvailable.contains(word))
+        if (isALine(selectingWord) && containsAvailable(word))
             acceptWord(selectingWord)
 
         selectingWord.forEach {
@@ -58,7 +63,7 @@ class CharacterController(private val boardEvents: BoardListener) {
             it.selected = true
         }
 
-        if (wordsAvailable.size == 0) {
+        if (availableWords().size == 0) {
             boardEvents.onVictory()
         }
     }
@@ -66,12 +71,12 @@ class CharacterController(private val boardEvents: BoardListener) {
     fun setWords() {
         allWords.addAll(
             arrayOf(
-                "Swift",
-                "Kotlin",
-                "ObjectiveC",
-                "Variable",
-                "Java",
-                "Mobile"
+                WordAvailable("Swift"),
+                WordAvailable("Kotlin"),
+                WordAvailable("ObjectiveC"),
+                WordAvailable("Variable"),
+                WordAvailable("Java"),
+                WordAvailable("Mobile")
                 //adding more words
 //                "Hire",
 //                "Shopify",
@@ -87,18 +92,17 @@ class CharacterController(private val boardEvents: BoardListener) {
      */
     fun reset() {
         setWords()
-        wordsAvailable.clear()
-        wordsAvailable.addAll(allWords)
-        BoardBuilder(board).build(wordsAvailable.toTypedArray())
+        availableWords().clear()
+        allWords.addAll(allWords)
+        BoardBuilder(board).build(availableWords().toTypedArray())
     }
 
 
     private fun removeWord(wordToRemove: String) {
-        if (wordsAvailable.contains(wordToRemove))
-            wordsAvailable.remove(wordToRemove)
-        else if (wordsAvailable.contains(wordToRemove.reversed())) {
-            wordsAvailable.remove(wordToRemove.reversed())
-        }
+        if (containsAvailable(wordToRemove))
+            remove(wordToRemove)
+        else if (containsAvailable(wordToRemove.reversed()))
+            remove(wordToRemove.reversed())
     }
 
     /**
