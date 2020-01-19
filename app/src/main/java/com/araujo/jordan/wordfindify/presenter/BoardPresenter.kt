@@ -1,27 +1,17 @@
 package com.araujo.jordan.wordfindify.presenter
 
-import android.util.Log
 import com.araujo.jordan.wordfindify.models.BoardChararacter
 import com.araujo.jordan.wordfindify.models.WordAvailable
+import java.io.Serializable
 import kotlin.math.max
 import kotlin.math.min
 
 /**
  * Designed and developed by Jordan Lira (@AraujoJordan)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 19th January, 2020
  */
-class BoardPresenter(private val boardEvents: BoardListener) {
+class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
 
     var board = ArrayList<ArrayList<BoardChararacter>>()
     var allWords = ArrayList<WordAvailable>()
@@ -29,7 +19,6 @@ class BoardPresenter(private val boardEvents: BoardListener) {
 
     fun addCharacter(character: BoardChararacter) {
         if (!selectedWord.contains(character)) {
-            Log.d("CharacterController", "Adding: $character")
             selectedWord.add(character)
             boardEvents.updateSelectedWord(selectedWord)
         }
@@ -55,6 +44,7 @@ class BoardPresenter(private val boardEvents: BoardListener) {
             return
         }
 
+
         var word = ""
         selectedWord.forEach { word += it.char }
 
@@ -72,6 +62,7 @@ class BoardPresenter(private val boardEvents: BoardListener) {
             it.isOnSelection = false
         }
         selectedWord.clear()
+        boardEvents.updateSelectedWord()
     }
 
     private fun acceptWord(
@@ -109,8 +100,14 @@ class BoardPresenter(private val boardEvents: BoardListener) {
     }
 
     fun reset() {
-        if(allWords.isEmpty()) setWords()
-        allWords.forEach { it.strikethrough = false }
+        allWords.clear()
+        setWords()
+        board.forEach { line ->
+            line.forEach {
+                it.selected = false
+                it.isOnSelection = false
+            }
+        }
         BoardBuilder(board).build(allWords.toTypedArray())
     }
 
@@ -176,5 +173,9 @@ class BoardPresenter(private val boardEvents: BoardListener) {
 interface BoardListener {
     fun onVictory() {}
     fun updateWordList(words: ArrayList<WordAvailable>) {}
-    fun updateSelectedWord(selectingWord: ArrayList<BoardChararacter>, acceptedWord:Boolean = false) {}
+    fun updateSelectedWord(
+        selectingWord: ArrayList<BoardChararacter>? = null,
+        acceptedWord: Boolean = false
+    ) {
+    }
 }

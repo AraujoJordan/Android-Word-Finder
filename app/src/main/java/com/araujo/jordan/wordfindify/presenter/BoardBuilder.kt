@@ -9,17 +9,7 @@ import kotlin.random.Random
 /**
  * Designed and developed by Jordan Lira (@AraujoJordan)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 19th January, 2020
  */
 class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
 
@@ -104,7 +94,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * @return the position that was possible to add
      */
     private fun canAddPrincipalDiagonal(wordToPut: String): Array<Int>? {
-        Log.d("BoardBuilder", "canAddVertically() ")
+//        Log.d("BoardBuilder", "canAddVertically() ")
 
         val posX = Random.nextInt(0, width - 1)
         val posY = Random.nextInt(0, height - 1)
@@ -130,7 +120,10 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * @param positionToPut position that it will start to put
      */
     private fun addPrincipalDiagonalWord(wordToPut: String, positionToPut: Array<Int>) {
-        Log.d("BoardBuilder", "addVertically() $wordToPut")
+        Log.d(
+            "BoardBuilder",
+            "addPrincipalDiagonalWord() $wordToPut ${positionToPut[0]} ${positionToPut[1]}"
+        )
         type = Orientation.DIAGONAL_FORWARDSLASH
         for (offset in wordToPut.indices) {
             board[positionToPut[0] + offset][positionToPut[1] + offset].char =
@@ -144,7 +137,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * @return the position that was possible to add
      */
     private fun canAddSecondaryDiagonal(wordToPut: String): Array<Int>? {
-        Log.d("BoardBuilder", "canAddVertically() ")
+//        Log.d("BoardBuilder", "canAddVertically() ")
 
         val posX = Random.nextInt(0, width - 1)
         val posY = Random.nextInt(0, height - 1)
@@ -170,7 +163,10 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * @param positionToPut position that it will start to put
      */
     private fun addSecondaryDiagonalWord(wordToPut: String, positionToPut: Array<Int>) {
-        Log.d("BoardBuilder", "addVertically() $wordToPut")
+        Log.d(
+            "BoardBuilder",
+            "addSecondaryDiagonalWord() $wordToPut ${positionToPut[0]} ${positionToPut[1]}"
+        )
         type = Orientation.VERTICAL
         for (offset in wordToPut.indices) {
             board[positionToPut[0] - offset][positionToPut[1] + offset].char =
@@ -184,7 +180,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * @return the position that was possible to add
      */
     private fun canAddVertically(wordToPut: String): Array<Int>? {
-        Log.d("BoardBuilder", "canAddVertically() ")
+//        Log.d("BoardBuilder", "canAddVertically() ")
 
         val posX = Random.nextInt(0, width - 1)
         val posY = Random.nextInt(0, height - 1)
@@ -210,7 +206,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
     * @param positionToPut position that it will start to put
     */
     private fun addVertically(wordToPut: String, positionToPut: Array<Int>) {
-        Log.d("BoardBuilder", "addVertically() $wordToPut")
+        Log.d("BoardBuilder", "addVertically() $wordToPut ${positionToPut[0]} ${positionToPut[1]}")
         type = Orientation.HORIZONTAL
         for (offset in wordToPut.indices) {
             board[positionToPut[0] + offset][positionToPut[1]].char = wordToPut[offset].toString()
@@ -223,7 +219,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * @return the position that was possible to add
      */
     private fun canAddHorizontally(wordToPut: String): Array<Int>? {
-        Log.d("BoardBuilder", "canAddHorizontally() ")
+//        Log.d("BoardBuilder", "canAddHorizontally() ")
 
         val posX = Random.nextInt(0, width - 1)
         val posY = Random.nextInt(0, height - 1)
@@ -249,7 +245,10 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
      * @param positionToPut position that it will start to put
      */
     private fun addHorizontally(wordToPut: String, positionToPut: Array<Int>) {
-        Log.d("BoardBuilder", "addHorizontally() ")
+        Log.d(
+            "BoardBuilder",
+            "addHorizontally() $wordToPut ${positionToPut[0]} ${positionToPut[1]}"
+        )
 
         type = Orientation.DIAGONAL_BACKSLASH
 
