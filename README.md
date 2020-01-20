@@ -1,4 +1,7 @@
 # Shopify-Android-Challenge-Summer-2020
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/AraujoJordan/Shopify-Android-Challenge-Summer-2020/LICENSE)
+[![GitHub release](https://img.shields.io/badge/release-1.0-blue)](https://github.com/AraujoJordan/Shopify-Android-Challenge-Summer-2020/releases/)
+
 A simple word search app made in Kotlin
 
 ## Objective
