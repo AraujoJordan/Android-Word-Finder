@@ -19,10 +19,11 @@ Those below are the requirements and the bonus itens that are included in the ap
 10. Allow the user to find the words by swiping over the words. :white_check_mark:
 
 ## Photos
-![](doc/demo.webm)
-![](doc/demo.webm)
-![](doc/demo.webm)
+![](doc/nowords.png)
+![](doc/somewords.png)
+![](doc/win.png)
 
 ## Video
-![](doc/demo.webm)
+[![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1579493509699&sqp=CJjQlPEF&rs=AOn4CLDgJS_nIT5YwTPGkWNfrqSr-oc4Gw)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
+![](https://youtu.be/hVZBYuBC-_I)
 
