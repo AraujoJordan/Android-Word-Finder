@@ -28,5 +28,8 @@ No Words selected          |  Some words selected      |  Win                   
 
 ## Video
 [![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1579493509699&sqp=CJjQlPEF&rs=AOn4CLDgJS_nIT5YwTPGkWNfrqSr-oc4Gw)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
-Video of the gameplay (with sounds)
+
+## APK Link
+In case of some problems found to build the app, you can use this link to download the apk (2.9 MB)
+[![Wordfinfify App](https://drive.google.com/open?id=1RwyVCIa6U8Brib4HR5JO6zq3kJjFuvvb "Wordfinfify App")
 
