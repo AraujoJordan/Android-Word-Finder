@@ -21,7 +21,7 @@ Those below are the requirements and the bonus itens that are included in the ap
 ## Photos
 No Words selected          |  Some words selected      |  Win                      |
 :-------------------------:|:-------------------------:|:-------------------------:|
-![](doc/nowords.png)       |   ![](doc/somewords.png)        | ![](doc/win.png)    | 
+![](doc/nowords.png)       |   ![](doc/somewords.png)  | ![](doc/ win.png)          | 
 
 
  
