@@ -1,5 +1,5 @@
 # Shopify-Android-Challenge-Summer-2020
-A simple word finder app made in Kotlin
+A simple word search app made in Kotlin
 
 ## Objective
 
