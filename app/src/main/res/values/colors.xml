@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FF7ABE</color>
-    <color name="colorPrimaryDark">#DF5A9E</color>
+    <color name="colorPrimaryDark">@color/colorPurpleLight</color>
     <color name="colorAccent">#FF5D5E</color>
 
     <color name="unselectCharColor">#55534F</color>
     <color name="selectCharColor">#FFF</color>
+
+    <color name="colorPurpleLight">#A865B2</color>
+    <color name="colorPurpleDark">#754988</color>
 </resources>

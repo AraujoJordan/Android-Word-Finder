@@ -1,6 +1,8 @@
 package com.araujo.jordan.wordfindify.views
 
 import android.content.Context
+import android.media.MediaPlayer
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -42,13 +44,11 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(LayoutInflater.from(parent.context), parent)
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(grid[position % 10][if (position < 10) 0 else position / 10])
-
+        holder.bind(grid[position % 10][if (position < 10) 0 else position / 10], grid)
     override fun getItemCount(): Int = grid.size * grid.size
-
     override fun isIndexSelectable(index: Int) = true
+
     override fun releaseSelection() {
         presenter.checkForWord()
         notifyDataSetChanged()
@@ -61,17 +61,8 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
     override fun setSelected(index: Int, selected: Boolean) {
         grid[index % 10][index / 10].isOnSelection = true
         presenter.addCharacter(grid[index % 10][if (index < 10) 0 else index / 10])
-//        grid.forEach {
-//            it.forEach { letter ->
-//                letter.isOnSelection = false
-//            }
-//        }
-//        controller.getCharactersBetween(controller.selectingWord.first(),controller.selectingWord.last())?.forEach {
-//            it.isOnSelection = true
-//        }
         notifyItemChanged(index)
     }
-
 
     override fun getItemId(position: Int) = position.toLong()
     override fun getItemViewType(position: Int) = position
@@ -100,17 +91,27 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
             )
         }
 
-        fun bind(boardChararacter: BoardChararacter) {
+        fun bind(boardChararacter: BoardChararacter, grid: ArrayList<ArrayList<BoardChararacter>>) {
+
             boardElement.text = boardChararacter.char
+
             if (boardChararacter.selected) {
                 if (boardElement?.textColors != removedLetterColor) {
+                    playNote(boardElement.context, grid)
                     boardElement.setTextColor(removedLetterColor)
                     bounceAnimation(boardElement)
                 }
             } else {
                 if (boardChararacter.isOnSelection) {
                     if (boardElement.textColors != selectedColor) {
+                        playNote(boardElement.context, grid)
                         boardElement.setTextColor(selectedColor)
+                        boardElement.isHapticFeedbackEnabled = true
+                        boardElement.performHapticFeedback(
+                            HapticFeedbackConstants.LONG_PRESS,
+                            HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                        )
+
                         bounceAnimation(boardElement)
                     }
                 } else {
@@ -120,6 +121,46 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
 
             if (itemView.tag == null) {
                 itemView.tag = boardChararacter
+            }
+        }
+
+
+        fun playNote(ctx: Context?, grid: ArrayList<ArrayList<BoardChararacter>>) {
+
+            if (grid.isEmpty() || ctx == null) return
+
+            var count = 0
+            grid.forEach { it.forEach { count += if (it.isOnSelection) 1 else 0 } }
+
+            MediaPlayer.create(
+                ctx, when (count) {
+                    1 -> R.raw.a3
+                    2 -> R.raw.c3
+                    3 -> R.raw.d3
+                    4 -> R.raw.e3
+                    5 -> R.raw.f3
+                    6 -> R.raw.g3
+                    7 -> R.raw.a4
+                    8 -> R.raw.c4
+                    9 -> R.raw.d4
+                    10 -> R.raw.e4
+                    11 -> R.raw.f4
+                    12 -> R.raw.g4
+                    13 -> R.raw.a5
+                    14 -> R.raw.c5
+                    15 -> R.raw.d5
+                    16 -> R.raw.e5
+                    17 -> R.raw.f5
+                    else -> R.raw.g5
+                }
+            ).apply {
+                setOnPreparedListener { mediaToPlay ->
+                    mediaToPlay.setVolume(1f, 1f)
+                    mediaToPlay.setOnCompletionListener { mediaForRelease ->
+                        mediaForRelease.release()
+                    }
+                    mediaToPlay.start()
+                }
             }
         }
     }

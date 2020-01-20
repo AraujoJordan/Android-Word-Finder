@@ -3,7 +3,9 @@ package com.araujo.jordan.wordfindify.views
 //import kotlinx.android.synthetic.main.board_activity.*
 import android.content.res.Configuration
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -20,6 +22,7 @@ import com.araujo.jordan.wordfindify.presenter.BoardPresenter
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -35,12 +38,16 @@ class BoardActivity : AppCompatActivity(),
     private var boardAdapter: BoardAdapter? = null
     private val wordsAvailableAdapter by lazy { WordListAdapter(boardPresenter.allWords) }
 
+    private var countDownTimer: CountDownTimer? = null
+    private var countDownMil = 300000L
+
     //Necessary for rotation
     private var activityBoardSelectedWord: TextView? = null
     private var viewKonfetti: KonfettiView? = null
     private var activityBoardGrid: RecyclerView? = null
     private var activityBoardAvailableWordsGrid: RecyclerView? = null
     private var activityBoardResetButton: ImageView? = null
+    private var activityBoardTimer: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +56,20 @@ class BoardActivity : AppCompatActivity(),
         boardAdapter = BoardAdapter(this, boardPresenter)
         linkBoard()
         reset()
+    }
 
-        Log.d("DLSDIJALSDJ", "EITA " + boardPresenter.board[0][0].char)
+    override fun onDestroy() {
+        super.onDestroy()
+
+        //nulling views reference to avoid memory leak
+        activityBoardSelectedWord = null
+        viewKonfetti = null
+        activityBoardGrid = null
+        activityBoardAvailableWordsGrid = null
+        activityBoardResetButton = null
+        activityBoardTimer = null
+        countDownTimer?.cancel()
+        countDownTimer = null
     }
 
     private fun buildBoard(): ArrayList<ArrayList<BoardChararacter>> {
@@ -70,6 +89,12 @@ class BoardActivity : AppCompatActivity(),
         selectingWord: ArrayList<BoardChararacter>?,
         acceptedWord: Boolean
     ) {
+
+        if (selectingWord?.size ?: 20 > 10) {
+            activityBoardSelectedWord?.text = ""
+            return
+        }
+
         Log.d("BoardActivity", "selectingWord()")
         if (acceptedWord) {
             activityBoardSelectedWord?.animate()?.setInterpolator(DecelerateInterpolator())
@@ -103,16 +128,40 @@ class BoardActivity : AppCompatActivity(),
         }
     }
 
+    fun onLose() {
+        showDialog(false)
+    }
+
     private fun reset() {
         boardPresenter.reset()
         wordsAvailableAdapter.updateList(boardPresenter.allWords)
         boardAdapter?.updateGrid(boardPresenter.board)
+
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(300000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                countDownMil -= 1000
+                activityBoardTimer?.setText(
+                    String.format(
+                        "%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60,
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+                    )
+                )
+            }
+
+            override fun onFinish() {
+                if (boardPresenter.allWords.count { !it.strikethrough } > 0)
+                    onLose()
+            }
+        }
+        countDownTimer?.start()
     }
 
 
     private fun showDialog(victory: Boolean) {
         val dialog = AlertDialog.Builder(this)
-        dialog.setTitle(if (victory) getString(R.string.dialogYouWinTitle) else "")
+        dialog.setTitle(if (victory) getString(R.string.dialogYouWinTitle) else getString(R.string.loseTitleDialog))
         dialog.setMessage(getString(R.string.dialogYouWinOrLooseDesc))
         dialog.setPositiveButton(getString(R.string.dialogYouWinButton)) { _, _ ->
             reset()
@@ -122,6 +171,15 @@ class BoardActivity : AppCompatActivity(),
     }
 
     override fun updateWordList(words: ArrayList<WordAvailable>) {
+//        if (words.count { it.strikethrough } > wordsAvailableAdapter.words.count { it.strikethrough }) {
+
+        MediaPlayer.create(this, R.raw.levelup).apply {
+            setOnPreparedListener {
+                setVolume(1f, 1f)
+                it.start()
+            }
+        }
+//        }
         wordsAvailableAdapter.updateList(words)
     }
 
@@ -134,6 +192,7 @@ class BoardActivity : AppCompatActivity(),
         activityBoardGrid = findViewById(R.id.activityBoardGrid)
         activityBoardAvailableWordsGrid = findViewById(R.id.activityBoardAvailableWordsGrid)
         activityBoardResetButton = findViewById(R.id.activityBoardResetButton)
+        activityBoardTimer = findViewById(R.id.activityBoardTimer)
 
         activityBoardGrid?.adapter = boardAdapter
         (localPresenter ?: boardPresenter).board = buildBoard()

@@ -10,13 +10,11 @@
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/viewKonfetti"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -24,18 +22,19 @@
             android:id="@+id/activityBoardTopbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
-            android:background="@android:color/white">
+            android:background="@drawable/purple_background"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:fontFamily="@font/uomopiccolo"
+                android:fontFamily="@font/titlefont"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/app_name"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"
                 android:textSize="40sp" />
 
             <ImageView
@@ -64,13 +63,11 @@
             android:nestedScrollingEnabled="false"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="4"
+            app:spanCount="3"
             tools:itemCount="6"
             tools:listitem="@layout/item_words" />
 
-        <androidx.recyclerview.widget.RecyclerView
-
-            android:id="@+id/activityBoardGrid"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -78,23 +75,62 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="27dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_ios_blueborder_whitebg"
-            android:gravity="center"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="10"
-            tools:itemCount="100" />
+            android:background="@drawable/btn_ios_blueborder_whitebg">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/activityBoardSelectedWord"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activityBoardGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="10"
+                tools:itemCount="100" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/uomopiccolo"
-            android:gravity="center_horizontal"
-            android:lines="1"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="60sp"
-            app:autoSizeTextType="uniform"
-            tools:text="KOTLIN" />
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:gravity="bottom">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@drawable/purple_background"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/activityBoardSelectedWord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/uomopiccolo"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:paddingStart="27dp"
+                    android:paddingEnd="27dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="50sp"
+                    tools:text="KOTLIN" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/activityBoardTimer"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="27dp"
+                    android:fontFamily="@font/uomopiccolo"
+                    android:gravity="center_vertical|end"
+                    android:lines="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="50sp"
+                    tools:text="05:00" />
+
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 </FrameLayout>

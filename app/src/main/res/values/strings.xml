@@ -3,4 +3,5 @@
     <string name="dialogYouWinTitle">You Win!</string>
     <string name="dialogYouWinButton">Restart!</string>
     <string name="dialogYouWinOrLooseDesc">Do you want to play it again?</string>
+    <string name="loseTitleDialog">You Lose!</string>
 </resources>

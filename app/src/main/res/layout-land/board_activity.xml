@@ -4,85 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@drawable/purple_background">
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/viewKonfetti"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activityBoardGrid"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="27dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="0.3"
             android:background="@drawable/btn_ios_blueborder_whitebg"
-            android:gravity="center"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="10"
-            tools:itemCount="100" />
+            android:gravity="center">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activityBoardGrid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_ios_blueborder_whitebg"
+                android:gravity="center"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="10"
+                tools:itemCount="100" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="27dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="0.7"
-            android:background="@android:color/white"
             android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/activityBoardTopbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="0.25"
                 android:layout_marginTop="10dp"
-                android:background="@android:color/white"
-                android:orientation="horizontal">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/uomopiccolo"
+                    android:fontFamily="@font/titlefont"
                     android:gravity="center_vertical|start"
                     android:text="@string/app_name"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp" />
 
                 <ImageView
                     android:id="@+id/activityBoardResetButton"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical|end"
-                    android:layout_marginEnd="27dp"
+                    android:layout_marginEnd="10dp"
                     android:padding="2dp"
                     android:src="@drawable/ic_refresh_black_24dp" />
 
-            </LinearLayout>
+            </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activityBoardAvailableWordsGrid"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="1"
+                android:layout_weight="0.12"
                 android:background="@drawable/btn_ios_blueborder_whitebg"
                 android:gravity="center"
                 android:nestedScrollingEnabled="false"
@@ -96,17 +103,30 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/activityBoardSelectedWord"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_weight="1"
+                android:layout_weight="0.28"
                 android:fontFamily="@font/uomopiccolo"
                 android:gravity="center_horizontal|center_vertical"
                 android:lines="1"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"
                 android:textSize="40sp"
                 android:visibility="visible"
                 app:autoSizeTextType="uniform"
                 tools:text="KOTLIN" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/activityBoardTimer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.28"
+                android:fontFamily="@font/uomopiccolo"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                tools:text="05:00" />
         </LinearLayout>
 
 
