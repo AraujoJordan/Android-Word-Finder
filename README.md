@@ -25,5 +25,5 @@ Those below are the requirements and the bonus itens that are included in the ap
 
 ## Video
 [![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1579493509699&sqp=CJjQlPEF&rs=AOn4CLDgJS_nIT5YwTPGkWNfrqSr-oc4Gw)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
-![](https://youtu.be/hVZBYuBC-_I)
+Video of the gameplay (with sounds)
 
