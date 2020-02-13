@@ -1,4 +1,4 @@
-# Shopify-Android-Challenge-Summer-2020
+# Android Word Finder
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/AraujoJordan/Shopify-Android-Challenge-Summer-2020/LICENSE)
 [![GitHub release](https://img.shields.io/badge/release-1.0-blue)](https://github.com/AraujoJordan/Shopify-Android-Challenge-Summer-2020/releases/)
 
@@ -30,7 +30,7 @@ No Words selected          |  Some words selected      |  Win                   
  
 
 ## Video
-[![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1579493509699&sqp=CJjQlPEF&rs=AOn4CLDgJS_nIT5YwTPGkWNfrqSr-oc4Gw)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
+[![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1581564826816&sqp=CLiFk_IF&rs=AOn4CLAG7vQA7iL34xE47FvQCCOm_RZweg)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
 
 ## APK Link
 In case of some problems found to build the app, you can use this link to download the apk (2.9 MB)
