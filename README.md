@@ -36,6 +36,7 @@ No Words selected          |  Some words selected      |  Win                   
 [![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1581564826816&sqp=CLiFk_IF&rs=AOn4CLAG7vQA7iL34xE47FvQCCOm_RZweg)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
 
 ## APK Link
-In case of some problems found to build the app, you can use this link to download the apk (2.9 MB)
-[![Wordfinfify App]](https://drive.google.com/open?id=1RwyVCIa6U8Brib4HR5JO6zq3kJjFuvvb "Wordfinfify App")
+In case of some problems found to build the app, you can use this link to download the apk (3.42 MB)
+
+![Wordfinfify Apk](https://github.com/AraujoJordan/Android-Word-Finder/releases/download/1.0.1/app-debug.apk)
 
