@@ -1,37 +1,13 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+# Use a package of configuration called an orb.
 orbs:
-  codecov: codecov/codecov@1.0.2
-jobs:
-  build:
-    docker:
-      - image: circleci/android:api-29
-    parallelism: 2
-    environment:
-      - TERM: dumb
-      - CODECOV_TOKEN: 339a1a45-8a78-4758-96e9-63b590be7b55
-      - COV_REPORT_LOCATION: app/build/reports/jacoco/testDebugUnitTestCoverage/testDebugUnitTestCoverage.xml
-      - JVM_OPTS: -Xmx2048m -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2
-      - _JAVA_OPTIONS: "-Xmx2048m -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2"
-    steps:
-      - checkout
-      - restore_cache:
-          key: jars-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-            - ~/.m2
-          key: jars-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
-      - run:
-          name: Lint Check
-          command: ./gradlew :app:lint
-      - run:
-          name: Run Tests
-          command: ./gradlew :app:jacocoTestReportDebug
-      - store_artifacts:
-          path: app/build/reports
-          destination: reports
-      - codecov/upload:
-          file: app/build/test-results/testDebugUnitTest/TEST-com.araujo.jordan.wordfindify.CheckPermissionsTest.xml
+  # Declare a dependency on the welcome-orb
+  welcome: circleci/welcome-orb@0.4.1
+# Orchestrate or schedule a set of jobs
+workflows:
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
+    jobs:
+      - welcome/run
