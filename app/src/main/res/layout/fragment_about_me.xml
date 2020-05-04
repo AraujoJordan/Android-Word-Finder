@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="30dp"
+    android:transitionName="menuAboutContainer"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="5dp"
+    tools:context=".views.mainMenu.MainMenuActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <ImageButton
+            android:id="@+id/aboutGoBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="12dp"
+            android:background="@null"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/titlefont"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/mainMenuAboutBtn"
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+
+            <LinearLayout
+                android:id="@+id/fragmentAboutMeContentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:src="@drawable/ic_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/titlefont"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/app_name"
+                    android:textColor="@android:color/black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="27dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="@string/aboutGameDescription" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lineColor" />
+
+                <TextView
+                    android:id="@+id/aboutGameVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginEnd="27dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/aboutGameVersion" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lineColor" />
+
+                <TextView
+                    android:id="@+id/aboutContactMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginEnd="27dp"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="12sp"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:text="@string/aboutMeContactMe" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lineColor" />
+
+                <TextView
+                    android:id="@+id/aboutVisitMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginEnd="27dp"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_visit_me"
+                    android:drawablePadding="12sp"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:text="@string/aboutMeVisitMe" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lineColor" />
+
+                <TextView
+                    android:id="@+id/aboutCheckTheCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginEnd="27dp"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_github"
+                    android:drawablePadding="12sp"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:text="@string/aboutCheckTheCode" />
+
+                <Space
+                    android:layout_width="1dp"
+                    android:layout_height="30dp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

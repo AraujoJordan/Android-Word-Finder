@@ -1,11 +1,36 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/coloBoardColorfulBackground</item>
+        <item name="colorPrimaryDark">@color/coloBoardColorfulBackgroundDarker</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
+
+    </style>
+
+    <style name="ShapeAppearanceOverlay.WordFinder.Button.Circle" parent="">
+        <item name="backgroundColor">@android:color/white</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/coloBoardColorfulBackgroundDarker</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/coloBoardColorfulBackgroundDarker</item>
+    </style>
+
+    <style name="NeutralButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/coloBoardColorfulBackgroundDarker</item>
     </style>
 
 </resources>

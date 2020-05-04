@@ -1,7 +1,33 @@
 <resources>
-    <string name="app_name">WordFindify</string>
+    <string name="app_name">Wordify</string>
     <string name="dialogYouWinTitle">You Win!</string>
     <string name="dialogYouWinButton">Restart!</string>
     <string name="dialogYouWinOrLooseDesc">Do you want to play it again?</string>
     <string name="loseTitleDialog">You Lose!</string>
+
+    <string name="mainMenuPlayBtn">Play</string>
+    <string name="mainMenuExit">Exit</string>
+    <string name="mainMenuAboutBtn">About</string>
+    <string name="mainMenuSettingsBtn">Settings</string>
+
+    <string name="descriptioMainMenuBackgroundDescription">Main menu background</string>
+    <string name="descriptionMainMenuLogo">Logo of the game</string>
+    <string name="descriptionContactMeIcon">Contact me email icon</string>
+
+    <string name="aboutGameDescription">Wordify lets you play unlimited word search puzzles for free! A word search puzzle is a well know word game that consists of the letters of words placed in a grid, which usually has a rectangular or square shape. The objective of this puzzle is to find and mark all the words hidden inside the box. The words may be placed horizontally, vertically, or diagonally. Wordify also have three differents difficulties, using time limit to make it harder or easier.</string>
+    <string name="aboutGameVersion">Version %1$s</string>
+    <string name="aboutMeContactMe">Contact me</string>
+    <string name="aboutCheckTheCode">Check the project code</string>
+    <string name="aboutMeVisitMe">Visit my website</string>
+    <string name="emailTitle">Hi Wordify Dev</string>
+    <string name="emailMessage">Hello, I\'m sending you an email from Wordify app!"</string>
+    <string name="aboutMeSendEmailDialog">Send Email</string>
+    <string name="devEmail" translatable="false">jordanjr.92@gmail.com</string>
+    <string name="devWebsite">https://araujojordan.github.io/</string>
+    <string name="projectLink">https://github.com/AraujoJordan/Android-Word-Finder</string>
+    <string name="levelChooserTitle">Select Difficulty</string>
+    <string name="levelDifficultyHard">Hard</string>
+    <string name="levelDifficultyMedium">Medium</string>
+    <string name="levelDifficultyEasy">Easy</string>
+
 </resources>

@@ -15,7 +15,7 @@
         android:fontFamily="@font/uomopiccolo"
         android:lines="1"
         android:gravity="center"
-        android:textColor="@color/unselectCharColor"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

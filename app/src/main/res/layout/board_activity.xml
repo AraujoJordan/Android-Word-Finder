@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@drawable/blue_background">
 
 
     <nl.dionsegijn.konfetti.KonfettiView
@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/purple_background"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
@@ -58,7 +57,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="27dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_ios_blueborder_whitebg"
+            android:background="@drawable/btn_outline_whitebg"
             android:gravity="center"
             android:nestedScrollingEnabled="false"
             android:scrollbars="none"
@@ -74,8 +73,7 @@
             android:layout_marginStart="27dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="27dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_ios_blueborder_whitebg">
+            android:layout_marginBottom="8dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activityBoardGrid"
@@ -84,6 +82,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:scrollbars="none"
+                android:background="@drawable/ic_board"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="10"
                 tools:itemCount="100" />
@@ -100,7 +99,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom|center_horizontal"
-                android:background="@drawable/purple_background"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView

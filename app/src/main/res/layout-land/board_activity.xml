@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/purple_background">
+    android:background="@drawable/blue_background">
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/viewKonfetti"
@@ -26,7 +26,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="0.3"
-            android:background="@drawable/btn_ios_blueborder_whitebg"
+            android:background="@drawable/btn_outline_whitebg"
             android:gravity="center">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/btn_ios_blueborder_whitebg"
+                android:background="@drawable/ic_board"
                 android:gravity="center"
                 android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -90,7 +90,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.12"
-                android:background="@drawable/btn_ios_blueborder_whitebg"
+                android:background="@drawable/btn_outline_whitebg"
                 android:gravity="center"
                 android:nestedScrollingEnabled="false"
                 android:padding="4dp"

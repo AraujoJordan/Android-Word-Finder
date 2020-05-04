@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:context=".views.mainMenu.MainMenuActivity">
+
+    <ImageView
+        android:id="@+id/mainMenuLogo"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:contentDescription="@string/descriptionMainMenuLogo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_logo" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mainMenuPlayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+
+            android:focusable="true"
+            android:transitionName="menuDifficultyContainer"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/uomopiccolo"
+                android:paddingLeft="80dp"
+                android:paddingTop="8dp"
+                android:paddingRight="80dp"
+                android:paddingBottom="8dp"
+                android:text="@string/mainMenuPlayBtn"
+                android:textColor="@android:color/black"
+                android:textSize="50sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mainMenuAboutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:transitionName="menuAboutContainer"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/uomopiccolo"
+                android:paddingLeft="80dp"
+                android:paddingTop="8dp"
+                android:paddingRight="80dp"
+                android:paddingBottom="8dp"
+                android:text="@string/mainMenuAboutBtn"
+                android:textColor="@android:color/black"
+                android:textSize="50sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mainMenuSettingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/uomopiccolo"
+                android:paddingLeft="80dp"
+                android:paddingTop="8dp"
+                android:paddingRight="80dp"
+                android:paddingBottom="8dp"
+                android:text="@string/mainMenuSettingsBtn"
+                android:textColor="@android:color/black"
+                android:textSize="50sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mainMenuExitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/uomopiccolo"
+                android:paddingLeft="80dp"
+                android:paddingTop="8dp"
+                android:paddingRight="80dp"
+                android:paddingBottom="8dp"
+                android:text="@string/mainMenuExit"
+                android:textColor="@android:color/black"
+                android:textSize="50sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</LinearLayout>

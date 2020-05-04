@@ -2,11 +2,15 @@
 <resources>
     <color name="colorPrimary">#FF7ABE</color>
     <color name="colorPrimaryDark">@color/colorPurpleLight</color>
-    <color name="colorAccent">#FF5D5E</color>
+    <color name="colorAccent">#feb861</color>
 
-    <color name="unselectCharColor">#55534F</color>
+    <color name="unselectCharColor">#FFF</color>
+    <color name="lineColor">#229297B6</color>
     <color name="selectCharColor">#FFF</color>
 
+    <color name="coloBoardColorfulBackground">#55b6f3</color>
+    <color name="coloBoardColorfulBackgroundDarker">#4f98d0</color>
+    <color name="coloBoardColorfulBackgroundDarkerDarker">#3f88c0</color>
     <color name="colorPurpleLight">#A865B2</color>
     <color name="colorPurpleDark">#754988</color>
 </resources>
