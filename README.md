@@ -41,8 +41,13 @@ Those below are the requirements and the bonus itens that are included in the ap
 9. Feel free to add any additional features you can think of. (Swiping sound effects and countdown timer) :white_check_mark:
 10. Allow the user to find the words by swiping over the words. :white_check_mark:
 
+## Extras
 
-
+1. Guarantee that source-code is building fine. [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
+2. Difficulty Chooser
+3. Time Countdown
+4. Swiping in 8 Directions
+5. About Page
 
 ## Video
 [![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1581564826816&sqp=CLiFk_IF&rs=AOn4CLAG7vQA7iL34xE47FvQCCOm_RZweg)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
@@ -73,7 +78,7 @@ Those below are the requirements and the bonus itens that are included in the ap
 
 
 ## APK Link
-In case of some problems found to build the app, you can use this link to download the apk (3.42 MB)
+In case of some problems found to build the app, you can use this link to download the apk (4.27 MB)
 
 ![Wordfinfify Apk](https://github.com/AraujoJordan/Android-Word-Finder/releases/download/1.0.1/app-debug.apk)
 
