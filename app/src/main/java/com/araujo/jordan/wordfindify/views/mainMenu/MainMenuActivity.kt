@@ -19,6 +19,9 @@ class MainMenuActivity : AppCompatActivity() {
     var restartAnim: Handler? = null
     var restartRunnable: Runnable? = null
 
+    var level: Int = 1
+    var difficulty = "easy"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)

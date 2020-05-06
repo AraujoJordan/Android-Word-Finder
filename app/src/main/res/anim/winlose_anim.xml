@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:repeatMode="reverse">
+    <rotate
+        android:duration="@android:integer/config_longAnimTime"
+        android:fromDegrees="-5"
+        android:interpolator="@android:anim/bounce_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:repeatCount="infinite"
+        android:toDegrees="5" />
+</set>

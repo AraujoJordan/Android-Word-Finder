@@ -9,7 +9,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.araujo.jordan.wordfindify.R
 import com.araujo.jordan.wordfindify.models.BoardChararacter
-import com.araujo.jordan.wordfindify.presenter.BoardPresenter
+import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
 import com.araujo.jordan.wordfindify.utils.bounceAnimation
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectReceiver
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectTouchListener

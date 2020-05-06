@@ -15,6 +15,10 @@
 
     </style>
 
+    <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/background_round_dialog</item>
+    </style>
+
     <style name="ShapeAppearanceOverlay.WordFinder.Button.Circle" parent="">
         <item name="backgroundColor">@android:color/white</item>
         <item name="cornerFamily">rounded</item>

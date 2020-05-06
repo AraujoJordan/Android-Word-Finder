@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemLevelCard"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_margin="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="40dp"
+    app:cardElevation="5dp">
+
+    <TextView
+        android:id="@+id/itemLevelNumber"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:fontFamily="@font/uomopiccolo"
+        android:gravity="center"
+        android:text="3"
+        android:textColor="@android:color/black"
+        android:textSize="50sp" />
+</com.google.android.material.card.MaterialCardView>

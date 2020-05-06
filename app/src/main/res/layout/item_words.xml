@@ -1,36 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
+    android:layout_margin="8dp"
     android:gravity="center">
+
     <TextView
         android:id="@+id/itemText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/uomopiccolo"
-        android:lines="1"
         android:gravity="center"
+        android:lines="1"
         android:textColor="@android:color/black"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="OBJECTIVEC" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/itemStrikethough"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
         android:layout_height="2dp"
-        app:layout_constraintBottom_toBottomOf="@id/itemText"
-        app:layout_constraintEnd_toEndOf="@id/itemText"
-        app:layout_constraintStart_toStartOf="@id/itemText"
-        app:layout_constraintTop_toTopOf="@id/itemText"
         android:alpha="1.0"
-        app:srcCompat="@drawable/strike_through">
-    </androidx.appcompat.widget.AppCompatImageView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:srcCompat="@drawable/strike_through" />
+</FrameLayout>

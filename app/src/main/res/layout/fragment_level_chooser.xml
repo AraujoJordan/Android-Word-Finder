@@ -34,93 +34,35 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/titlefont"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/levelChooserTitle"
+            android:text="@string/levelSelectionTitle"
             android:textColor="@android:color/black"
             android:textSize="27sp" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:id="@+id/fragmentAboutMeContentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/menuDifficultyEasy"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/levelGrid"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="40dp"
-                    app:cardElevation="5dp">
+                    android:layoutAnimation="@anim/list_item_animation_fall_down_set"
+                    app:layoutManager="com.araujojordan.ktlist.recycleviewLayoutManagers.SupportGridLayoutManager"
+                    app:spanCount="4"
+                    tools:listitem="@layout/item_level">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/uomopiccolo"
-                        android:paddingLeft="80dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="80dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/levelDifficultyEasy"
-                        android:textColor="@android:color/black"
-                        android:textSize="50sp" />
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/menuDifficultyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="40dp"
-                    app:cardElevation="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/uomopiccolo"
-                        android:paddingLeft="80dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="80dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/levelDifficultyMedium"
-                        android:textColor="@android:color/black"
-                        android:textSize="50sp" />
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/menuDifficultyHard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="40dp"
-                    app:cardElevation="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/uomopiccolo"
-                        android:paddingLeft="80dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="80dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/levelDifficultyHard"
-                        android:textColor="@android:color/black"
-                        android:textSize="50sp" />
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <Space
                     android:layout_width="1dp"

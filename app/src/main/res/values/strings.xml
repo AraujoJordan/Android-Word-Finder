@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Wordify</string>
     <string name="dialogYouWinTitle">You Win!</string>
-    <string name="dialogYouWinButton">Restart!</string>
+    <string name="dialogYouWinButton">Play again!</string>
     <string name="dialogYouWinOrLooseDesc">Do you want to play it again?</string>
     <string name="loseTitleDialog">You Lose!</string>
 
@@ -13,6 +13,7 @@
     <string name="descriptioMainMenuBackgroundDescription">Main menu background</string>
     <string name="descriptionMainMenuLogo">Logo of the game</string>
     <string name="descriptionContactMeIcon">Contact me email icon</string>
+    <string name="descriptionWinOrGameOverLogo">Win or lose logo</string>
 
     <string name="aboutGameDescription">Wordify lets you play unlimited word search puzzles for free! A word search puzzle is a well know word game that consists of the letters of words placed in a grid, which usually has a rectangular or square shape. The objective of this puzzle is to find and mark all the words hidden inside the box. The words may be placed horizontally, vertically, or diagonally. Wordify also have three differents difficulties, using time limit to make it harder or easier.</string>
     <string name="aboutGameVersion">Version %1$s</string>
@@ -29,5 +30,7 @@
     <string name="levelDifficultyHard">Hard</string>
     <string name="levelDifficultyMedium">Medium</string>
     <string name="levelDifficultyEasy">Easy</string>
+    <string name="levelSelectionTitle">Select a level</string>
+
 
 </resources>

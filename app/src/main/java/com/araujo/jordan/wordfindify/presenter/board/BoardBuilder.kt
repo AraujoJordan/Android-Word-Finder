@@ -1,4 +1,4 @@
-package com.araujo.jordan.wordfindify.presenter
+package com.araujo.jordan.wordfindify.presenter.board
 
 import android.util.Log
 import com.araujo.jordan.wordfindify.models.BoardChararacter
@@ -18,7 +18,8 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
     private val width = board.size
     private val height = board.size
 
-    var type = Orientation.VERTICAL
+    var type =
+        Orientation.VERTICAL
 
     /**
      * Reset board and word list to be added
@@ -124,7 +125,8 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
             "BoardBuilder",
             "addPrincipalDiagonalWord() $wordToPut ${positionToPut[0]} ${positionToPut[1]}"
         )
-        type = Orientation.DIAGONAL_FORWARDSLASH
+        type =
+            Orientation.DIAGONAL_FORWARDSLASH
         for (offset in wordToPut.indices) {
             board[positionToPut[0] + offset][positionToPut[1] + offset].char =
                 wordToPut[offset].toString()
@@ -167,7 +169,8 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
             "BoardBuilder",
             "addSecondaryDiagonalWord() $wordToPut ${positionToPut[0]} ${positionToPut[1]}"
         )
-        type = Orientation.VERTICAL
+        type =
+            Orientation.VERTICAL
         for (offset in wordToPut.indices) {
             board[positionToPut[0] - offset][positionToPut[1] + offset].char =
                 wordToPut[offset].toString()
@@ -207,7 +210,8 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
     */
     private fun addVertically(wordToPut: String, positionToPut: Array<Int>) {
         Log.d("BoardBuilder", "addVertically() $wordToPut ${positionToPut[0]} ${positionToPut[1]}")
-        type = Orientation.HORIZONTAL
+        type =
+            Orientation.HORIZONTAL
         for (offset in wordToPut.indices) {
             board[positionToPut[0] + offset][positionToPut[1]].char = wordToPut[offset].toString()
         }
@@ -250,7 +254,8 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
             "addHorizontally() $wordToPut ${positionToPut[0]} ${positionToPut[1]}"
         )
 
-        type = Orientation.DIAGONAL_BACKSLASH
+        type =
+            Orientation.DIAGONAL_BACKSLASH
 
         for (offset in wordToPut.indices)
             board[positionToPut[0]][positionToPut[1] + offset].char = wordToPut[offset].toString()

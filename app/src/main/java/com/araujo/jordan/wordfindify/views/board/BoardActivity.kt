@@ -11,15 +11,20 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.araujo.jordan.wordfindify.R
 import com.araujo.jordan.wordfindify.models.BoardChararacter
 import com.araujo.jordan.wordfindify.models.WordAvailable
-import com.araujo.jordan.wordfindify.presenter.BoardListener
-import com.araujo.jordan.wordfindify.presenter.BoardPresenter
+import com.araujo.jordan.wordfindify.presenter.board.BoardListener
+import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
+import com.araujo.jordan.wordfindify.presenter.level.LevelBuilder
+import com.araujo.jordan.wordfindify.presenter.storage.StorageUtils
 import com.araujo.jordan.wordfindify.utils.hideSystemUI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
@@ -35,7 +40,8 @@ import java.util.concurrent.TimeUnit
 class BoardActivity : AppCompatActivity(),
     BoardListener {
 
-    var boardPresenter = BoardPresenter(this)
+    var boardPresenter =
+        BoardPresenter(this)
     private var boardAdapter: BoardAdapter? = null
     private val wordsAvailableAdapter by lazy {
         WordListAdapter(
@@ -127,13 +133,21 @@ class BoardActivity : AppCompatActivity(),
     }
 
     override fun onVictory() {
+
+        val storage = StorageUtils()
+        val player = storage.getPlayer(this)
+        if (player.level < LevelBuilder().getLevels().size) {
+            ++player.level
+            storage.savePlayer(this, player)
+        }
+
         viewKonfetti?.build()?.apply {
             addColors(Color.YELLOW, Color.BLUE, Color.MAGENTA)
             setDirection(0.0, 359.0)
             setSpeed(1f, 5f)
             setFadeOutEnabled(true)
             setTimeToLive(1500L)
-            addShapes(Shape.RECT, Shape.CIRCLE)
+            addShapes(Shape.Square, Shape.Circle)
             addSizes(Size(12))
             setPosition(-50f, (viewKonfetti?.width ?: 0) + 50f, -50f, -50f)
             streamFor(300, 1500L)
@@ -145,15 +159,26 @@ class BoardActivity : AppCompatActivity(),
         showDialog(false)
     }
 
-    private fun reset() {
-        boardPresenter.reset()
+    fun reset() {
+        GlobalScope.launch(Dispatchers.IO) {
+            boardPresenter.reset(
+                LevelBuilder().getCategory(
+                    intent.getIntExtra("level", 1)
+                )
+            )
+            Log.d("BoardActivity", "boardPresenter.allWords: " + boardPresenter.allWords.toString())
+            updateBoard()
+        }
+    }
+
+    private fun updateBoard() = CoroutineScope(Dispatchers.Main.immediate).launch {
         wordsAvailableAdapter.updateList(boardPresenter.allWords)
         boardAdapter?.updateGrid(boardPresenter.board)
 
 
         countDownMil = when (intent.getStringExtra("difficulty")) {
-            "easy" -> 600000L
-            "medium" -> 300000L
+            "easy" -> 300000L
+            "medium" -> 150000L
             "hard" -> 120000L
             else -> 300000L
         }
@@ -179,14 +204,7 @@ class BoardActivity : AppCompatActivity(),
 
 
     private fun showDialog(victory: Boolean) {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setTitle(if (victory) getString(R.string.dialogYouWinTitle) else getString(R.string.loseTitleDialog))
-        dialog.setMessage(getString(R.string.dialogYouWinOrLooseDesc))
-        dialog.setPositiveButton(getString(R.string.dialogYouWinButton)) { _, _ ->
-            reset()
-        }
-        dialog.setCancelable(true)
-        dialog.show()
+        WinLoseDialog(this, victory)
     }
 
     override fun updateWordList(words: ArrayList<WordAvailable>) {

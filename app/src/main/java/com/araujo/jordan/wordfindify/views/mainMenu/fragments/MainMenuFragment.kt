@@ -29,7 +29,7 @@ class MainMenuFragment : Fragment() {
         mainMenuPlayButton.setOnClickListener {
             (activity as? MainMenuActivity)?.replaceFragment(
                 it,
-                MenuLevelChooserFragment()
+                MenuDifficultyChooserFragment()
             )
 
         }

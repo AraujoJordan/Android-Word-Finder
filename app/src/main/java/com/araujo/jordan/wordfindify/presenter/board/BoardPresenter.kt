@@ -1,7 +1,8 @@
-package com.araujo.jordan.wordfindify.presenter
+package com.araujo.jordan.wordfindify.presenter.board
 
 import com.araujo.jordan.wordfindify.models.BoardChararacter
 import com.araujo.jordan.wordfindify.models.WordAvailable
+import com.araujo.jordan.wordfindify.presenter.requests.DataMuseAPI
 import java.io.Serializable
 import kotlin.math.max
 import kotlin.math.min
@@ -81,27 +82,24 @@ class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
         deselectWord()
     }
 
-    private fun setWords() {
-        allWords.addAll(
-            arrayOf(
-                WordAvailable("Swift"),
-                WordAvailable("Kotlin"),
-                WordAvailable("ObjectiveC"),
-                WordAvailable("Variable"),
-                WordAvailable("Java"),
-                WordAvailable("Mobile")
-//                "HireMe",
-//                "Shopify",
-//                "React",
-//                "Native",
-//                "Jetpack"
-            )
-        )
+    private suspend fun setWords(category: String = "Shopify") {
+        if (category == "Shopify")
+            allWords.addAll(
+                arrayOf(
+                    WordAvailable("Swift"),
+                    WordAvailable("Kotlin"),
+                    WordAvailable("ObjectiveC"),
+                    WordAvailable("Variable"),
+                    WordAvailable("Java"),
+                    WordAvailable("Mobile")
+                )
+            ) else
+            allWords.addAll(DataMuseAPI().getRandomWordList(category))
     }
 
-    fun reset() {
+    suspend fun reset(category: String = "Shopify") {
         allWords.clear()
-        setWords()
+        setWords(category)
         board.forEach { line ->
             line.forEach {
                 it.selected = false
