@@ -40,9 +40,6 @@ Those below are the requirements and the bonus itens that are included in the ap
 4. Swiping in 8 Directions
 5. About Page
 
-## Video
-[![Wordfinfify App](https://i9.ytimg.com/vi/hVZBYuBC-_I/mqdefault.jpg?time=1581564826816&sqp=CLiFk_IF&rs=AOn4CLAG7vQA7iL34xE47FvQCCOm_RZweg)](https://youtu.be/hVZBYuBC-_I "Wordfinfify App")
-
 ## APK Link
 In case of some problems found to build the app, you can use this link to download the apk (4.27 MB)
 
