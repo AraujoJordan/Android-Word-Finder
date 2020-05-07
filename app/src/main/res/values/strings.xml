@@ -31,6 +31,7 @@
     <string name="levelDifficultyMedium">Medium</string>
     <string name="levelDifficultyEasy">Easy</string>
     <string name="levelSelectionTitle">Select a level</string>
+    <string name="levelLabel">Level %1$d</string>
 
 
 </resources>

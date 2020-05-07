@@ -8,11 +8,31 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Designed and developed by Jordan Lira (@AraujoJordan)
+ * Designed and developed by Jordan Lira (@araujojordan)
  *
- * 19th January, 2020
+ * Copyright (C) 2020 Jordan Lira de Araujo Junior
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
+ * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
+ * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
+ * change in most of implementations.
  */
-class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
+class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
 
     var board = ArrayList<ArrayList<BoardChararacter>>()
     var allWords = ArrayList<WordAvailable>()
@@ -21,7 +41,7 @@ class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
     fun addCharacter(character: BoardChararacter) {
         if (!selectedWord.contains(character)) {
             selectedWord.add(character)
-            boardEvents.updateSelectedWord(selectedWord)
+            boardEvents?.updateSelectedWord(selectedWord)
         }
     }
 
@@ -35,25 +55,36 @@ class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
             allWords[wordIndex].strikethrough = true
     }
 
+    fun buildBoard(): ArrayList<ArrayList<BoardChararacter>> {
+        if (board.isNotEmpty()) return board
+        val grid = ArrayList<ArrayList<BoardChararacter>>()
+        for (y in 0..9) {
+            val line = ArrayList<BoardChararacter>()
+            for (x in 0..9) {
+                line.add(BoardChararacter("", arrayOf(x, y), false))
+            }
+            grid.add(line)
+        }
+        return grid
+    }
+
     /**
      * Check selection for some word
      */
     fun checkForWord() {
         if (selectedWord.isEmpty() || selectedWord.size == 1) {
             selectedWord.clear()
-            boardEvents.updateSelectedWord(selectedWord)
+            boardEvents?.updateSelectedWord(selectedWord)
             return
         }
-
-
         var word = ""
         selectedWord.forEach { word += it.char }
 
         if (isALine(selectedWord) && containsAvailable(word)) {
             acceptWord(selectedWord)
-            boardEvents.updateSelectedWord(selectedWord, true)
+            boardEvents?.updateSelectedWord(selectedWord, true)
         } else {
-            boardEvents.updateSelectedWord(selectedWord)
+            boardEvents?.updateSelectedWord(selectedWord)
         }
         deselectWord()
     }
@@ -63,7 +94,7 @@ class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
             it.isOnSelection = false
         }
         selectedWord.clear()
-        boardEvents.updateSelectedWord()
+        boardEvents?.updateSelectedWord()
     }
 
     private fun acceptWord(
@@ -71,18 +102,18 @@ class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
     ) {
         val wordSelected = getString(selectingWord)
         removeWord(wordSelected)
-        boardEvents.updateWordList(allWords)
+        boardEvents?.updateWordList(allWords)
 
         selectingWord.forEach {
             it.selected = true
         }
 
         if (availableWords().size == 0)
-            boardEvents.onVictory()
+            boardEvents?.onVictory()
         deselectWord()
     }
 
-    private suspend fun setWords(category: String = "Shopify") {
+    private fun setWords(category: String) {
         if (category == "Shopify")
             allWords.addAll(
                 arrayOf(
@@ -97,7 +128,7 @@ class BoardPresenter(private val boardEvents: BoardListener) : Serializable {
             allWords.addAll(DataMuseAPI().getRandomWordList(category))
     }
 
-    suspend fun reset(category: String = "Shopify") {
+    fun reset(category: String) {
         allWords.clear()
         setWords(category)
         board.forEach { line ->

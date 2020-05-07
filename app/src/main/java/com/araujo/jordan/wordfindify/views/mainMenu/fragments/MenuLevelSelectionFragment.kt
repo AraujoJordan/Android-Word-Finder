@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.araujo.jordan.wordfindify.R
+import com.araujo.jordan.wordfindify.models.Player
 import com.araujo.jordan.wordfindify.presenter.level.LevelBuilder
 import com.araujo.jordan.wordfindify.presenter.storage.StorageUtils
 import com.araujo.jordan.wordfindify.views.board.BoardActivity
@@ -17,7 +18,34 @@ import kotlinx.android.synthetic.main.fragment_difficulty_chooser.goBackButton
 import kotlinx.android.synthetic.main.fragment_level_chooser.*
 import kotlinx.android.synthetic.main.item_level.view.*
 
+/**
+ * Designed and developed by Jordan Lira (@araujojordan)
+ *
+ * Copyright (C) 2020 Jordan Lira de Araujo Junior
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
+ * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
+ * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
+ * change in most of implementations.
+ */
 class MenuLevelSelectionFragment : Fragment() {
+
+    var player: Player? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +60,11 @@ class MenuLevelSelectionFragment : Fragment() {
 
         goBackButton.setOnClickListener { activity?.onBackPressed() }
 
-        val player = StorageUtils().getPlayer(view.context)
-
         levelGrid.adapter = KtList(
             LevelBuilder().getLevels(),
             R.layout.item_level,
             clickListener = { level, _, _ ->
-                if (player.level >= level.level) {
+                if (player?.level ?: 1 >= level.level) {
                     val act = (activity as? MainMenuActivity)
                     startActivity(Intent(context, BoardActivity::class.java).apply {
                         putExtra("difficulty", act?.difficulty)
@@ -47,7 +73,7 @@ class MenuLevelSelectionFragment : Fragment() {
                 }
             }
         ) { level, view ->
-            view.alpha = if (player.level >= level.level) 1.0f else 0.5f
+            view.alpha = if (player?.level ?: 1 >= level.level) 1.0f else 0.5f
             view.itemLevelNumber.text = level.level.toString()
         }
 
@@ -55,6 +81,9 @@ class MenuLevelSelectionFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        levelGrid?.adapter?.notifyDataSetChanged()
+        context?.let {
+            player = StorageUtils().getPlayer(it)
+            levelGrid?.adapter?.notifyDataSetChanged()
+        }
     }
 }

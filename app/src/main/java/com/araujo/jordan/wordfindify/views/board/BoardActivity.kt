@@ -7,6 +7,8 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
@@ -20,11 +22,7 @@ import com.araujo.jordan.wordfindify.presenter.board.BoardListener
 import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
 import com.araujo.jordan.wordfindify.presenter.level.LevelBuilder
 import com.araujo.jordan.wordfindify.presenter.storage.StorageUtils
-import com.araujo.jordan.wordfindify.utils.hideSystemUI
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.board_activity.*
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
@@ -32,16 +30,34 @@ import java.util.concurrent.TimeUnit
 
 
 /**
- * Designed and developed by Jordan Lira (@AraujoJordan)
+ * Designed and developed by Jordan Lira (@araujojordan)
  *
- * 19th January, 2020
+ * Copyright (C) 2020 Jordan Lira de Araujo Junior
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
+ * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
+ * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
+ * change in most of implementations.
  */
-
 class BoardActivity : AppCompatActivity(),
     BoardListener {
 
-    var boardPresenter =
-        BoardPresenter(this)
+    var boardPresenter = BoardPresenter(this)
     private var boardAdapter: BoardAdapter? = null
     private val wordsAvailableAdapter by lazy {
         WordListAdapter(
@@ -64,17 +80,20 @@ class BoardActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.board_activity)
 
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        boardLevelLabel.text = getString(
+            R.string.levelLabel,
+            intent.getIntExtra("level", 1)
+        )
+
         boardAdapter = BoardAdapter(
             this,
             boardPresenter
         )
         linkBoard()
-        reset()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        hideSystemUI(window)
+        reset()
     }
 
     override fun onDestroy() {
@@ -91,18 +110,6 @@ class BoardActivity : AppCompatActivity(),
         countDownTimer = null
     }
 
-    private fun buildBoard(): ArrayList<ArrayList<BoardChararacter>> {
-        if (boardPresenter.board.isNotEmpty()) return boardPresenter.board
-        val grid = ArrayList<ArrayList<BoardChararacter>>()
-        for (y in 0..9) {
-            val line = ArrayList<BoardChararacter>()
-            for (x in 0..9) {
-                line.add(BoardChararacter("", arrayOf(x, y), false))
-            }
-            grid.add(line)
-        }
-        return grid
-    }
 
     override fun updateSelectedWord(
         selectingWord: ArrayList<BoardChararacter>?,
@@ -160,21 +167,39 @@ class BoardActivity : AppCompatActivity(),
     }
 
     fun reset() {
-        GlobalScope.launch(Dispatchers.IO) {
-            boardPresenter.reset(
-                LevelBuilder().getCategory(
-                    intent.getIntExtra("level", 1)
+        boardLoading?.visibility = View.VISIBLE
+        Thread {
+            try {
+                boardPresenter.reset(
+                    LevelBuilder().getCategory(
+                        intent.getIntExtra("level", 1)
+                    )
                 )
-            )
-            Log.d("BoardActivity", "boardPresenter.allWords: " + boardPresenter.allWords.toString())
-            updateBoard()
+                Log.d(
+                    "BoardActivity",
+                    "boardPresenter.allWords: " + boardPresenter.allWords.toString()
+                )
+                updateBoard()
+            } catch (err: Exception) {
+                showError(err.message.toString())
+            }
+        }.start()
+    }
+
+    private fun showError(errorMessage: String) = runOnUiThread {
+        when {
+            errorMessage.contains("Failed to execute http call", true) ||
+                    errorMessage.contains("Unable to resolve host", true) ||
+                    errorMessage.contains("connect ETIMEDOUT", true) ||
+                    errorMessage.contains("HTTP 503", true) ->
+                showDialog(false, "No internet connection!")
+            else -> showDialog(false, errorMessage)
         }
     }
 
-    private fun updateBoard() = CoroutineScope(Dispatchers.Main.immediate).launch {
+    private fun updateBoard() = runOnUiThread {
         wordsAvailableAdapter.updateList(boardPresenter.allWords)
         boardAdapter?.updateGrid(boardPresenter.board)
-
 
         countDownMil = when (intent.getStringExtra("difficulty")) {
             "easy" -> 300000L
@@ -200,11 +225,13 @@ class BoardActivity : AppCompatActivity(),
             }
         }
         countDownTimer?.start()
+        boardLoading?.visibility = View.GONE
+        activityBoardAvailableWordsGrid?.visibility = View.VISIBLE
     }
 
 
-    private fun showDialog(victory: Boolean) {
-        WinLoseDialog(this, victory)
+    private fun showDialog(victory: Boolean, msg: String? = null) {
+        WinLoseDialog(this, victory, msg)
     }
 
     override fun updateWordList(words: ArrayList<WordAvailable>) {
@@ -232,7 +259,7 @@ class BoardActivity : AppCompatActivity(),
         activityBoardTimer = findViewById(R.id.activityBoardTimer)
 
         activityBoardGrid?.adapter = boardAdapter
-        (localPresenter ?: boardPresenter).board = buildBoard()
+        (localPresenter ?: boardPresenter).board = boardPresenter.buildBoard()
         boardAdapter?.updateGrid((localPresenter ?: boardPresenter).board)
         activityBoardAvailableWordsGrid?.adapter = wordsAvailableAdapter
         activityBoardResetButton?.setOnClickListener {
@@ -240,8 +267,6 @@ class BoardActivity : AppCompatActivity(),
                 .withEndAction { it.rotation = 0f }.start()
             reset()
         }
-
-
 
         activityBoardAvailableWordsGrid?.adapter?.notifyDataSetChanged()
         activityBoardGrid?.adapter?.notifyDataSetChanged()
@@ -260,7 +285,6 @@ class BoardActivity : AppCompatActivity(),
 
         linkBoard()
         boardPresenter = localPresenter
-        hideSystemUI(window)
     }
 
 }

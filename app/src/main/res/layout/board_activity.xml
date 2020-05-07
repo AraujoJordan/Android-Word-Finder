@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/blue_background">
 
-
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/viewKonfetti"
         android:layout_width="match_parent"
@@ -15,7 +14,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
+        android:layout_marginBottom="40dp"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <FrameLayout
@@ -27,6 +29,7 @@
             android:paddingBottom="10dp">
 
             <TextView
+                android:id="@+id/boardLevelLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -50,6 +53,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activityBoardAvailableWordsGrid"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,9 +72,10 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="27dp"
+            android:layout_weight="1"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="27dp"
             android:layout_marginBottom="8dp">
@@ -91,7 +96,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="bottom">
 
@@ -131,4 +136,12 @@
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/boardLoading"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:visibility="visible" />
+
 </FrameLayout>

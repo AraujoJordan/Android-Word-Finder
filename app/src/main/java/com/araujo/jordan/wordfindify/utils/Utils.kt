@@ -1,24 +1,36 @@
 package com.araujo.jordan.wordfindify.utils
 
 import android.view.View
-import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 
 /**
- * Designed and developed by Jordan Lira (@AraujoJordan)
+ * Designed and developed by Jordan Lira (@araujojordan)
  *
- * 19th January, 2020
+ * Copyright (C) 2020 Jordan Lira de Araujo Junior
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
+ * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
+ * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
+ * change in most of implementations.
  */
-
-fun runAsync(asyncRunning: () -> Unit) =
-    runBlocking { withContext(Dispatchers.IO) { asyncRunning() } }
-
 fun bounceAnimation(view: View) {
     view.startAnimation(
         ScaleAnimation(
@@ -31,27 +43,4 @@ fun bounceAnimation(view: View) {
             fillAfter = false
             interpolator = BounceInterpolator()
         })
-}
-
-fun hideSystemUI(window: Window) {
-    // Enables regular immersive mode.
-    // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
-    // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-    window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-            // Set the content to appear under the system bars so that the
-            // content doesn't resize when the system bars hide and show.
-            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            // Hide the nav bar and status bar
-            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            or View.SYSTEM_UI_FLAG_FULLSCREEN)
-}
-
-// Shows the system bars by removing all the flags
-// except for the ones that make the content appear under the system bars.
-fun showSystemUI(window: Window) {
-    window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 }
