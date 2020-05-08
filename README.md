@@ -35,10 +35,11 @@ Those below are the requirements and the bonus itens that are included in the ap
 ## Extras
 
 1. Guarantee that source-code is building fine. [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
-2. Difficulty Chooser
-3. Time Countdown
+2. Difficulty Chooser (Countdown Timer)
 4. Swiping in 8 Directions
-5. About Page
+5. JUnit5 Test cases
+6. 12 Different Levels
+7. Random words from ![Datamuse API](https://www.datamuse.com/api/)
 
 ## APK Link
 In case of some problems found to build the app, you can use this link to download the apk (4.27 MB)
