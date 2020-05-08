@@ -42,7 +42,7 @@ Those below are the requirements and the bonus itens that are included in the ap
 7. Random words from ![Datamuse API](https://www.datamuse.com/api/)
 
 ## APK Link
-In case of some problems found to build the app, you can use this link to download the apk (4.27 MB)
+In case of some problems found to build the app, you can use this link to download the apk.
 
-![Wordfinfify Apk](https://github.com/AraujoJordan/Android-Word-Finder/releases/download/1.0.2/app-debug.apk)
+![Wordfinfify Apk](https://github.com/AraujoJordan/Android-Word-Finder/releases/latest/download/app-debug.apk)
 
