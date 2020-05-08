@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
+import com.araujo.jordan.latest.scrollUntilFindText
 import com.araujo.jordan.latest.textClick
 import com.araujo.jordan.latest.textExists
 import com.araujo.jordan.latest.uiDevice
@@ -39,7 +40,7 @@ class MenuInstrumentedTest {
         launchApp()
         uiDevice().apply {
             textClick("About")
-            assert(textExists("Version ${BuildConfig.VERSION_NAME}"))
+            assertTrue(scrollUntilFindText("Contact me")?.isEnabled == true)
         }
     }
 
@@ -67,7 +68,7 @@ class MenuInstrumentedTest {
     fun testMenuLevels() {
         launchApp()
         uiDevice().apply {
-            StorageUtils().deleteData(activityRule.activity)
+            StorageUtils().savePlayer(activityRule.activity, Player(12))
             textClick("Play")
             textClick("Easy")
             repeat(LevelBuilder().getLevels().size) {

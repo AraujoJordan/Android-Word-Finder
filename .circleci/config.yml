@@ -5,7 +5,7 @@ jobs:
   build:
     docker:
       - image: circleci/android:api-29
-    parallelism: 2
+    #    parallelism: 2
     environment:
       - TERM: dumb
       - CODECOV_TOKEN: 339a1a45-8a78-4758-96e9-63b590be7b55

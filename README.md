@@ -39,7 +39,7 @@ Those below are the requirements and the bonus itens that are included in the ap
 4. Swiping in 8 Directions
 5. JUnit5 Test cases
 6. 12 Different Levels
-7. Random words from ![Datamuse API](https://www.datamuse.com/api/)
+7. Random words from [Datamuse API](https://www.datamuse.com/api/)
 
 ## APK Link
 In case of some problems found to build the app, you can use this link to download the apk.
