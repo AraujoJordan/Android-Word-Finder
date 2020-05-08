@@ -8,7 +8,7 @@ jobs:
     #    parallelism: 2
     environment:
       - TERM: dumb
-      - CODECOV_TOKEN: 339a1a45-8a78-4758-96e9-63b590be7b55
+      - CODECOV_TOKEN: "$CODECOV_TOKEN"
       - COV_REPORT_LOCATION: app/build/reports/jacoco/testDebugUnitTestCoverage/testDebugUnitTestCoverage.xml
       - JVM_OPTS: -Xmx2048m -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2
       - _JAVA_OPTIONS: "-Xmx2048m -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2"
