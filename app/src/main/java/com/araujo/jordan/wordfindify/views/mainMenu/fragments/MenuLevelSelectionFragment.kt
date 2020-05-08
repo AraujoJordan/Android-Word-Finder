@@ -2,6 +2,7 @@ package com.araujo.jordan.wordfindify.views.mainMenu.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,17 +73,17 @@ class MenuLevelSelectionFragment : Fragment() {
                     })
                 }
             }
-        ) { level, view ->
-            view.alpha = if (player?.level ?: 1 >= level.level) 1.0f else 0.5f
-            view.itemLevelNumber.text = level.level.toString()
+        ) { level, itemView ->
+            itemView.alpha = if (player?.level ?: 1 >= level.level) 1.0f else 0.5f
+            itemView.itemLevelNumber.text = level.level.toString()
         }
-
     }
 
     override fun onResume() {
         super.onResume()
         context?.let {
             player = StorageUtils().getPlayer(it)
+            Log.d("onResume()", "getPlayer ${player?.level}")
             levelGrid?.adapter?.notifyDataSetChanged()
         }
     }

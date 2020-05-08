@@ -1,8 +1,8 @@
-package com.araujo.jordan.wordfindify.presenter.storage
+package com.araujo.jordan.wordfindify.utils
 
-import android.content.Context
-import com.araujo.jordan.wordfindify.BuildConfig
-import com.araujo.jordan.wordfindify.models.Player
+import android.os.Looper
+import org.robolectric.Shadows
+import java.util.*
 
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
@@ -29,27 +29,43 @@ import com.araujo.jordan.wordfindify.models.Player
  * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
  * change in most of implementations.
  */
-class StorageUtils {
+class KTestWait<T>(private var millisseconds: Long = 3000) {
 
-    private val wordFinderAlias = BuildConfig.APPLICATION_ID
+    private var timeOfStarted: Long? = null
+    private var waitObject: T? = null
 
-
-    fun getPlayer(ctx: Context): Player {
-        val sharedPreferences = ctx.getSharedPreferences(wordFinderAlias, Context.MODE_PRIVATE)
-        return Player(
-            level = sharedPreferences.getInt("level", 1)
-        )
+    /**
+     * This method will idle the the app that are using RoboEletric until the send method send
+     * the required object or it reach the timeout defined in the millisseconds variable
+     *
+     * It's looks slow as it is a busy wait. But this code release all the background threads that
+     * are pending, so the code will run it on background will rapidly be executed, even if have multiple
+     * threads OR Coroutines to run.
+     */
+    fun receive(): T? {
+        timeOfStarted = Date().time
+        while (waitObject == null && !overtime()) Shadows.shadowOf(Looper.getMainLooper()).idle()
+        return waitObject
     }
 
-    fun savePlayer(ctx: Context, player: Player) {
-        val sharedPreferences = ctx.getSharedPreferences(wordFinderAlias, Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("level", player.level)
-        editor.apply()
+    /**
+     * Interrupt the receive() loop
+     */
+    fun send(waitObject: T) {
+        this.waitObject = waitObject
     }
 
-    fun deleteData(ctx: Context) {
-        val sharedPreferences = ctx.getSharedPreferences(wordFinderAlias, Context.MODE_PRIVATE)
-        sharedPreferences.edit().clear().commit()
+    /**
+     * Force stop the loop (it will be as timetout)
+     */
+    fun stop() {
+        timeOfStarted = timeOfStarted?.plus(millisseconds)
+    }
+
+    /**
+     * Check for overtime for reach the timeout
+     */
+    private fun overtime(): Boolean {
+        return Date().time >= (timeOfStarted ?: Date().time) + millisseconds
     }
 }

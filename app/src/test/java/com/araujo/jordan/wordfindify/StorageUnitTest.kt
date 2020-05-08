@@ -4,11 +4,9 @@ import android.os.Build
 import com.araujo.jordan.wordfindify.models.WordAvailable
 import com.araujo.jordan.wordfindify.presenter.requests.DataMuseAPI
 import com.araujo.jordan.wordfindify.utils.KTestWait
-import io.sniffy.socket.DisableSockets
 import io.sniffy.test.junit.SniffyRule
 import org.junit.Rule
 import org.junit.Test
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -44,13 +42,13 @@ import org.robolectric.annotation.LooperMode
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
 @LooperMode(LooperMode.Mode.PAUSED)
-class WordAPIUnitTest {
+class StorageUnitTest {
 
     @get:Rule
     var sniffyRule = SniffyRule()
 
     @Test
-    fun getWords() {
+    fun getPlayer() {
         val waitTest = KTestWait<List<WordAvailable>?>(3000)
         waitTest.send(DataMuseAPI().getRandomWordList("fruit", 10))
         val list = waitTest.receive()
@@ -59,7 +57,7 @@ class WordAPIUnitTest {
     }
 
     @Test
-    fun wordsAreRandomFromSameCategory() {
+    fun savePlayer() {
         val waitTest = KTestWait<List<WordAvailable>?>(3000)
         waitTest.send(DataMuseAPI().getRandomWordList("fruit", 10))
         val list1 = waitTest.receive()
@@ -79,17 +77,5 @@ class WordAPIUnitTest {
 
         // It will be statistically hard to get 3 words at the same position of 2 random lists
         assertTrue(repeatedWords < 3)
-    }
-
-    @Test
-    @DisableSockets
-    fun noInternetConnection() {
-        Assertions.assertThrows(Exception::class.java) {
-            val waitTest = KTestWait<List<WordAvailable>?>(3000)
-            waitTest.send(DataMuseAPI().getRandomWordList("fruit", 10))
-            val list = waitTest.receive()
-            println(list)
-            assertTrue(false)
-        }
     }
 }

@@ -57,7 +57,5 @@ class DataMuseAPI {
             Log.d("DataMuseAPI", "getRandomWordList() $word")
         }
         return list
-//                it.resume(list)
-        return listOf()
     }
 }

@@ -50,7 +50,7 @@ class BoardGenerationUnitTest {
                     WordAvailable(randomString())
                 )
             )
-            println(boardPresenter.board)
+//            println(boardPresenter.board)
             assertTrue(true)
         }
     }
@@ -70,17 +70,16 @@ class BoardGenerationUnitTest {
                         WordAvailable(randomString())
                     )
                 )
-                println(boardPresenter.board)
+//                println(boardPresenter.board)
             }
 
             assertTrue(true)
         }
     }
 
-
     @Test
     fun impossibleBoardGeneration() {
-        try {
+        assertThrows(AssertionFailedError::class.java) {
             assertTimeoutPreemptively(ofSeconds(5)) {
                 val boardPresenter = BoardBuilder(BoardPresenter(null).buildBoard())
                 boardPresenter.build(
@@ -95,15 +94,12 @@ class BoardGenerationUnitTest {
                         WordAvailable("hhhhhhhhhh"),
                         WordAvailable("iiiiiiiiii"),
                         WordAvailable("jjjjjjjjjj"),
-                        WordAvailable("hhhhhhhhhh")
+                        WordAvailable("llllllllll")
                     )
                 )
-                println(boardPresenter.board)
-
+//                println(boardPresenter.board)
                 fail("This should not be reach")
             }
-        } catch (err: AssertionFailedError) {
-            assertTrue(true)
         }
     }
 

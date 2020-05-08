@@ -29,4 +29,6 @@ data class WordAvailable(
     var word: String,
     var strikethrough: Boolean = false,
     var didAnimation: Boolean = false
-)
+) {
+    override fun toString() = word
+}

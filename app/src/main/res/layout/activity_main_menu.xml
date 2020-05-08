@@ -14,10 +14,10 @@
         android:scaleType="centerCrop"
         android:src="@drawable/background_main_menu" />
 
-    <nl.dionsegijn.konfetti.KonfettiView
-        android:id="@+id/mainMenuKonfetti"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--    <nl.dionsegijn.konfetti.KonfettiView-->
+    <!--        android:id="@+id/mainMenuKonfetti"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent" />-->
 
     <FrameLayout
         android:id="@+id/menuFragmentContainer"
