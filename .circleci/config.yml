@@ -34,4 +34,4 @@ jobs:
           path: app/build/reports
           destination: reports
       - codecov/upload:
-          file: app/build/test-results/testDebugUnitTest/TEST-com.araujo.jordan.wordfindify.CheckPermissionsTest.xml
+          file: reports/jacoco/debug/jacoco.xml
