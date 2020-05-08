@@ -29,8 +29,8 @@ android {
     buildTypes {
         getByName("debug") {
             isTestCoverageEnabled = true
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
         }
         getByName("release") {
             isTestCoverageEnabled = true
