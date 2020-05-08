@@ -34,4 +34,4 @@ jobs:
           path: app/build/reports
           destination: reports
       - codecov/upload:
-          file: reports/jacoco/debug/jacoco.xml
+          file: /home/circleci/project/app/build/reports/jacoco/debug/jacoco.xml
