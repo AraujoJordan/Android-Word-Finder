@@ -12,6 +12,7 @@ WordFindify is an amazing Word Finder game.
 <p float="left" align="center">
     <img src="./doc/menuTitle.gif" width="200"/>
     <img src="./doc/gameplay.gif" width="200"/>
+    <img src="./doc/win.gif" width="200"/>
 </p>
 
 
