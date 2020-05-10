@@ -3,8 +3,8 @@ An incredible Word Finder game fully made in Kotlin
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/60794f003b48491a87ee80e4a5f66e3e)](https://app.codacy.com/manual/AraujoJordan/Android-Word-Finder?utm_source=github.com&utm_medium=referral&utm_content=AraujoJordan/Android-Word-Finder&utm_campaign=Badge_Grade_Dashboard)
 [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/AraujoJordan/Shopify-Android-Challenge-Summer-2020/LICENSE)
-[![GitHub release](https://img.shields.io/badge/release-1.0-blue)](https://github.com/AraujoJordan/Shopify-Android-Challenge-Summer-2020/releases/)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/AraujoJordan/Android-Word-Finder/LICENSE)
+[![GitHub release](https://img.shields.io/badge/release-1.0-blue)](https://github.com/AraujoJordan/Android-Word-Finder/releases/)
 
 WordFindify is an amazing Word Finder game.
 
