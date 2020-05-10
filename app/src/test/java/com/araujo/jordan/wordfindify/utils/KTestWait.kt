@@ -1,9 +1,3 @@
-package com.araujo.jordan.wordfindify.utils
-
-import android.os.Looper
-import org.robolectric.Shadows
-import java.util.*
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -24,10 +18,17 @@ import java.util.*
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify.utils
+
+import android.os.Looper
+import org.robolectric.Shadows
+import java.util.*
+
+/**
+ * Unit Test helper for async parts of code on Roboeletric
+ * @author Jordan L. Araujo Jr. (araujojordan)
  */
 class KTestWait<T>(private var millisseconds: Long = 3000) {
 

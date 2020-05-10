@@ -1,12 +1,3 @@
-package com.araujo.jordan.wordfindify.presenter.board
-
-import com.araujo.jordan.wordfindify.models.BoardChararacter
-import com.araujo.jordan.wordfindify.models.WordAvailable
-import com.araujo.jordan.wordfindify.presenter.requests.DataMuseAPI
-import java.io.Serializable
-import kotlin.math.max
-import kotlin.math.min
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -27,18 +18,31 @@ import kotlin.math.min
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify.presenter.board
+
+import com.araujo.jordan.wordfindify.models.BoardCharacter
+import com.araujo.jordan.wordfindify.models.WordAvailable
+import com.araujo.jordan.wordfindify.presenter.requests.DataMuseAPI
+import java.io.Serializable
+import kotlin.math.max
+import kotlin.math.min
+
+/**
+ * Presenter class that manipulate the board
+ * @author Jordan L. Araujo Jr. (araujojordan)
  */
 class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
 
-    var board = ArrayList<ArrayList<BoardChararacter>>()
+    var board = ArrayList<ArrayList<BoardCharacter>>()
     var allWords = ArrayList<WordAvailable>()
-    var selectedWord = ArrayList<BoardChararacter>()
+    var selectedWord = ArrayList<BoardCharacter>()
 
-    fun addCharacter(character: BoardChararacter) {
+    /**
+     * Add Character to update the user selection
+     */
+    fun addCharacter(character: BoardCharacter) {
         if (!selectedWord.contains(character)) {
             selectedWord.add(character)
             boardEvents?.updateSelectedWord(selectedWord)
@@ -55,13 +59,16 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
             allWords[wordIndex].strikethrough = true
     }
 
-    fun buildBoard(): ArrayList<ArrayList<BoardChararacter>> {
+    /**
+     * Build an empty board
+     */
+    fun buildEmptyBoard(xSize: Int = 9, ySize: Int = 9): ArrayList<ArrayList<BoardCharacter>> {
         if (board.isNotEmpty()) return board
-        val grid = ArrayList<ArrayList<BoardChararacter>>()
-        for (y in 0..9) {
-            val line = ArrayList<BoardChararacter>()
-            for (x in 0..9) {
-                line.add(BoardChararacter("", arrayOf(x, y), false))
+        val grid = ArrayList<ArrayList<BoardCharacter>>()
+        for (y in 0..ySize) {
+            val line = ArrayList<BoardCharacter>()
+            for (x in 0..xSize) {
+                line.add(BoardCharacter("", arrayOf(x, y), false))
             }
             grid.add(line)
         }
@@ -69,7 +76,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
     }
 
     /**
-     * Check selection for some word
+     * Check selection for some AvailableWord
      */
     fun checkForWord() {
         if (selectedWord.isEmpty() || selectedWord.size == 1) {
@@ -98,7 +105,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
     }
 
     private fun acceptWord(
-        selectingWord: ArrayList<BoardChararacter>
+        selectingWord: ArrayList<BoardCharacter>
     ) {
         val wordSelected = getString(selectingWord)
         removeWord(wordSelected)
@@ -113,7 +120,14 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
         deselectWord()
     }
 
-    private fun setWords(category: String) {
+    /**
+     * Set the category of the words
+     * This method can call a API request to get words from Datamuse api or can use
+     * a fixed word list
+     *
+     * @param category The category of the words
+     */
+    private fun setWordsCategory(category: String) {
         if (category == "Shopify")
             allWords.addAll(
                 arrayOf(
@@ -124,13 +138,17 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
                     WordAvailable("Java"),
                     WordAvailable("Mobile")
                 )
-            ) else
+            )
+        else
             allWords.addAll(DataMuseAPI().getRandomWordList(category))
     }
 
+    /**
+     * Reset the board with the given category
+     */
     fun reset(category: String) {
         allWords.clear()
-        setWords(category)
+        setWordsCategory(category)
         board.forEach { line ->
             line.forEach {
                 it.selected = false
@@ -150,7 +168,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
     /**
      * Get string from characters selected
      */
-    private fun getString(wordSelected: ArrayList<BoardChararacter>): String {
+    private fun getString(wordSelected: ArrayList<BoardCharacter>): String {
         var word = ""
         wordSelected.forEach {
             word += it.char
@@ -158,14 +176,14 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
         return word
     }
 
-    private fun isALine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+    private fun isALine(wordSelected: ArrayList<BoardCharacter>): Boolean {
 
         return isHorizontalLine(wordSelected) ||
                 isVerticalLine(wordSelected) ||
                 isDiagonal(wordSelected)
     }
 
-    private fun isDiagonal(wordSelected: ArrayList<BoardChararacter>): Boolean {
+    private fun isDiagonal(wordSelected: ArrayList<BoardCharacter>): Boolean {
         val distXY = (max(wordSelected.first().position[0], wordSelected.last().position[0]) -
                 min(wordSelected.first().position[0], wordSelected.last().position[0]))
         return (distXY ==
@@ -174,7 +192,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
                 wordSelected.size - 1 == distXY
     }
 
-    private fun isHorizontalLine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+    private fun isHorizontalLine(wordSelected: ArrayList<BoardCharacter>): Boolean {
         var last = wordSelected.first()
         wordSelected.forEach {
             if (last != it) {
@@ -185,7 +203,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
         return true
     }
 
-    private fun isVerticalLine(wordSelected: ArrayList<BoardChararacter>): Boolean {
+    private fun isVerticalLine(wordSelected: ArrayList<BoardCharacter>): Boolean {
         var last = wordSelected.first()
         wordSelected.forEach {
             if (last != it) {
@@ -199,12 +217,26 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
 
 }
 
+/**
+ * Interface of the BoardPresenter Contract
+ * It's show the actions that the board does on View
+ */
 interface BoardListener {
-    fun onVictory() {}
-    fun updateWordList(words: ArrayList<WordAvailable>) {}
+    /**
+     * The board presenter will trigger this method if all WordAvailable where swiped
+     */
+    fun onVictory()
+
+    /**
+     * Update word list of the UI
+     */
+    fun updateWordList(words: ArrayList<WordAvailable>)
+
+    /**
+     * Accept or ignore word selection
+     */
     fun updateSelectedWord(
-        selectingWord: ArrayList<BoardChararacter>? = null,
+        selectingWord: ArrayList<BoardCharacter>? = null,
         acceptedWord: Boolean = false
-    ) {
-    }
+    )
 }

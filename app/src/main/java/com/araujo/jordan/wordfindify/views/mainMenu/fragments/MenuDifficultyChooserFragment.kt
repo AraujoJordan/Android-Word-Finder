@@ -1,15 +1,3 @@
-package com.araujo.jordan.wordfindify.views.mainMenu.fragments
-
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.araujo.jordan.wordfindify.R
-import com.araujo.jordan.wordfindify.views.mainMenu.MainMenuActivity
-import com.google.android.material.transition.MaterialContainerTransform
-import kotlinx.android.synthetic.main.fragment_difficulty_chooser.*
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -30,10 +18,23 @@ import kotlinx.android.synthetic.main.fragment_difficulty_chooser.*
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify.views.mainMenu.fragments
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.araujo.jordan.wordfindify.R
+import com.araujo.jordan.wordfindify.views.mainMenu.MainMenuActivity
+import com.google.android.material.transition.MaterialContainerTransform
+import kotlinx.android.synthetic.main.fragment_difficulty_chooser.*
+
+/**
+ * Fragment that show the difficulty menu in the MainMenuActivity
+ * @author Jordan L. Araujo Jr. (araujojordan)
  */
 class MenuDifficultyChooserFragment : Fragment() {
 
@@ -51,35 +52,19 @@ class MenuDifficultyChooserFragment : Fragment() {
         goBackButton.setOnClickListener { activity?.onBackPressed() }
 
         menuLevel1.setOnClickListener {
-
             val act = (activity as? MainMenuActivity)
             act?.difficulty = "easy"
             act?.replaceFragment(view, MenuLevelSelectionFragment())
-
-
-//            startActivity(Intent(context, BoardActivity::class.java).apply {
-//                putExtra("difficulty", "easy")
-//            })
         }
         menuDifficultyMedium.setOnClickListener {
-
             val act = (activity as? MainMenuActivity)
             act?.difficulty = "medium"
             act?.replaceFragment(view, MenuLevelSelectionFragment())
-
-//            startActivity(Intent(context, BoardActivity::class.java).apply {
-//                putExtra("difficulty", "medium")
-//            })
         }
         menuDifficultyHard.setOnClickListener {
-
             val act = (activity as? MainMenuActivity)
             act?.difficulty = "hard"
             act?.replaceFragment(view, MenuLevelSelectionFragment())
-
-//            startActivity(Intent(context, BoardActivity::class.java).apply {
-//                putExtra("difficulty", "hard")
-//            })
         }
 
 

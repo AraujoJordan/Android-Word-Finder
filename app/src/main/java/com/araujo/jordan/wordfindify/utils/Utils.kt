@@ -1,11 +1,3 @@
-package com.araujo.jordan.wordfindify.utils
-
-import android.view.View
-import android.view.animation.Animation
-import android.view.animation.BounceInterpolator
-import android.view.animation.ScaleAnimation
-
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -26,10 +18,17 @@ import android.view.animation.ScaleAnimation
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify.utils
+
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+
+/**
+ * Do a bouncing animation one time only in a view
  */
 fun bounceAnimation(view: View) {
     view.startAnimation(

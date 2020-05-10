@@ -1,14 +1,3 @@
-package com.araujo.jordan.wordfindify
-
-import com.araujo.jordan.wordfindify.models.WordAvailable
-import com.araujo.jordan.wordfindify.presenter.board.BoardBuilder
-import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
-import org.opentest4j.AssertionFailedError
-import java.time.Duration.ofSeconds
-import kotlin.random.Random
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -29,17 +18,29 @@ import kotlin.random.Random
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify
+
+import com.araujo.jordan.wordfindify.models.WordAvailable
+import com.araujo.jordan.wordfindify.presenter.board.BoardBuilder
+import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+import org.opentest4j.AssertionFailedError
+import java.time.Duration.ofSeconds
+import kotlin.random.Random
+
+/**
+ * Unit Test for the board generation
+ * @author Jordan L. Araujo Jr. (araujojordan)
  */
 class BoardGenerationUnitTest {
 
     @Test
     fun generateOneBoard() {
         assertTimeoutPreemptively(ofSeconds(3)) {
-            val boardPresenter = BoardBuilder(BoardPresenter(null).buildBoard())
+            val boardPresenter = BoardBuilder(BoardPresenter(null).buildEmptyBoard())
             boardPresenter.build(
                 arrayOf(
                     WordAvailable(randomString()),
@@ -59,7 +60,7 @@ class BoardGenerationUnitTest {
     fun generateRandomBoardsStressTest() {
         assertTimeoutPreemptively(ofSeconds(40)) {
             repeat(1000) {
-                val boardPresenter = BoardBuilder(BoardPresenter(null).buildBoard())
+                val boardPresenter = BoardBuilder(BoardPresenter(null).buildEmptyBoard())
                 boardPresenter.build(
                     arrayOf(
                         WordAvailable(randomString()),
@@ -81,7 +82,7 @@ class BoardGenerationUnitTest {
     fun impossibleBoardGeneration() {
         assertThrows(AssertionFailedError::class.java) {
             assertTimeoutPreemptively(ofSeconds(5)) {
-                val boardPresenter = BoardBuilder(BoardPresenter(null).buildBoard())
+                val boardPresenter = BoardBuilder(BoardPresenter(null).buildEmptyBoard())
                 boardPresenter.build(
                     arrayOf(
                         WordAvailable("aaaaaaaaaa"),

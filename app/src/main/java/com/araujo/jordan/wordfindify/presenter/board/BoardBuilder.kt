@@ -1,11 +1,3 @@
-package com.araujo.jordan.wordfindify.presenter.board
-
-import android.util.Log
-import com.araujo.jordan.wordfindify.models.BoardChararacter
-import com.araujo.jordan.wordfindify.models.WordAvailable
-import kotlin.random.Random
-
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -26,12 +18,22 @@ import kotlin.random.Random
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
  */
-class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
+
+package com.araujo.jordan.wordfindify.presenter.board
+
+import android.util.Log
+import com.araujo.jordan.wordfindify.models.BoardCharacter
+import com.araujo.jordan.wordfindify.models.WordAvailable
+import kotlin.random.Random
+
+/**
+ * Presenter class that build the gaming Board
+ * @author Jordan L. Araujo Jr. (araujojordan)
+ * @param board that wil be used to generate the gaming board (can be empty)
+ *
+ */
+class BoardBuilder(val board: ArrayList<ArrayList<BoardCharacter>>) {
 
     private var wordsAvailable = ArrayList<WordAvailable>()
     private val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -42,7 +44,7 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
         Orientation.VERTICAL
 
     /**
-     * Reset board and word list to be added
+     * Reset board and set word list to be added
      * @param wordList list of words to be added
      */
     fun reset(wordList: Array<WordAvailable>) {
@@ -280,6 +282,9 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardChararacter>>) {
             board[positionToPut[0]][positionToPut[1] + offset].char = wordToPut[offset].toString()
     }
 
+    /**
+     * Enum that give all orientation available (it's also for reversed, so it's 8)
+     */
     enum class Orientation {
         VERTICAL,
         HORIZONTAL,

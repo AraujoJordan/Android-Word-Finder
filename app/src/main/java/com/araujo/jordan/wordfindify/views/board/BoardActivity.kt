@@ -1,34 +1,3 @@
-package com.araujo.jordan.wordfindify.views.board
-
-//import kotlinx.android.synthetic.main.board_activity.*
-import android.content.res.Configuration
-import android.graphics.Color
-import android.media.MediaPlayer
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
-import android.view.View
-import android.view.WindowManager
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import com.araujo.jordan.wordfindify.R
-import com.araujo.jordan.wordfindify.models.BoardChararacter
-import com.araujo.jordan.wordfindify.models.WordAvailable
-import com.araujo.jordan.wordfindify.presenter.board.BoardListener
-import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
-import com.araujo.jordan.wordfindify.presenter.level.LevelBuilder
-import com.araujo.jordan.wordfindify.presenter.storage.StorageUtils
-import kotlinx.android.synthetic.main.board_activity.*
-import nl.dionsegijn.konfetti.KonfettiView
-import nl.dionsegijn.konfetti.models.Shape
-import nl.dionsegijn.konfetti.models.Size
-import java.util.concurrent.TimeUnit
-
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -49,20 +18,74 @@ import java.util.concurrent.TimeUnit
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
  */
-class BoardActivity : AppCompatActivity(),
-    BoardListener {
+
+package com.araujo.jordan.wordfindify.views.board
+
+import android.content.res.Configuration
+import android.graphics.Color
+import android.media.MediaPlayer
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.Log
+import android.view.View
+import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.araujo.jordan.wordfindify.R
+import com.araujo.jordan.wordfindify.models.BoardCharacter
+import com.araujo.jordan.wordfindify.models.WordAvailable
+import com.araujo.jordan.wordfindify.presenter.board.BoardListener
+import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
+import com.araujo.jordan.wordfindify.presenter.level.LevelBuilder
+import com.araujo.jordan.wordfindify.presenter.storage.StorageUtils
+import com.araujojordan.ktlist.KtList
+import kotlinx.android.synthetic.main.board_activity.*
+import kotlinx.android.synthetic.main.item_words.view.*
+import nl.dionsegijn.konfetti.KonfettiView
+import nl.dionsegijn.konfetti.models.Shape
+import nl.dionsegijn.konfetti.models.Size
+import java.util.concurrent.TimeUnit
+
+/**
+ * Main Activity of the Game Board
+ * @author Jordan L. Araujo Jr. (araujojordan)
+ */
+class BoardActivity : AppCompatActivity(), BoardListener {
 
     var boardPresenter = BoardPresenter(this)
     private var boardAdapter: BoardAdapter? = null
     private val wordsAvailableAdapter by lazy {
-        WordListAdapter(
-            boardPresenter.allWords
-        )
+        KtList(boardPresenter.allWords, R.layout.item_words) { word, itemView ->
+            val textView = itemView.itemText
+            val itemStrikethough = itemView.itemStrikethough
+
+            textView.text = word.word
+
+            if (word.strikethrough) {
+                if (!word.didAnimation) {
+                    val anim = ScaleAnimation(
+                        0.0f, 1.0f, 1.0f, 1.0f,
+                        Animation.RELATIVE_TO_SELF, 0.0f,
+                        Animation.RELATIVE_TO_SELF, 0.5f
+                    )
+                    anim.duration = 1000
+                    itemStrikethough.startAnimation(anim)
+                    word.didAnimation = true
+                }
+                itemStrikethough.alpha = 1.0f
+                itemView.alpha = 0.5f
+            } else {
+                itemStrikethough.alpha = 0.0f
+                itemView.alpha = 1f
+            }
+        }
     }
 
     private var countDownTimer: CountDownTimer? = null
@@ -112,7 +135,7 @@ class BoardActivity : AppCompatActivity(),
 
 
     override fun updateSelectedWord(
-        selectingWord: ArrayList<BoardChararacter>?,
+        selectingWord: ArrayList<BoardCharacter>?,
         acceptedWord: Boolean
     ) {
 
@@ -162,10 +185,18 @@ class BoardActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Automatically show GameOver screen
+     */
     fun onLose() {
         showDialog(false)
     }
 
+    /**
+     * Reset game and timeout.
+     * This will random the words in the board and
+     * it will also get another random word list if it's not fixed.
+     */
     fun reset() {
         boardLoading?.visibility = View.VISIBLE
         Thread {
@@ -198,7 +229,7 @@ class BoardActivity : AppCompatActivity(),
     }
 
     private fun updateBoard() = runOnUiThread {
-        wordsAvailableAdapter.updateList(boardPresenter.allWords)
+        wordsAvailableAdapter.setList(boardPresenter.allWords)
         boardAdapter?.updateGrid(boardPresenter.board)
 
         countDownMil = when (intent.getStringExtra("difficulty")) {
@@ -244,11 +275,13 @@ class BoardActivity : AppCompatActivity(),
             }
         }
 //        }
-        wordsAvailableAdapter.updateList(words)
+        wordsAvailableAdapter.setList(words)
     }
 
-
-    fun linkBoard(localPresenter: BoardPresenter? = null) {
+    /**
+     * Link the board view (RecycleViews, Available word list...)  with the BoardPresenter
+     */
+    private fun linkBoard(localPresenter: BoardPresenter? = null) {
 
         //necessary linking after rotation
         activityBoardSelectedWord = findViewById(R.id.activityBoardSelectedWord)
@@ -259,7 +292,7 @@ class BoardActivity : AppCompatActivity(),
         activityBoardTimer = findViewById(R.id.activityBoardTimer)
 
         activityBoardGrid?.adapter = boardAdapter
-        (localPresenter ?: boardPresenter).board = boardPresenter.buildBoard()
+        (localPresenter ?: boardPresenter).board = boardPresenter.buildEmptyBoard()
         boardAdapter?.updateGrid((localPresenter ?: boardPresenter).board)
         activityBoardAvailableWordsGrid?.adapter = wordsAvailableAdapter
         activityBoardResetButton?.setOnClickListener {

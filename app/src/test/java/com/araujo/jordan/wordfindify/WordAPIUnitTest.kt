@@ -1,21 +1,3 @@
-package com.araujo.jordan.wordfindify
-
-import android.os.Build
-import com.araujo.jordan.wordfindify.models.WordAvailable
-import com.araujo.jordan.wordfindify.presenter.requests.DataMuseAPI
-import com.araujo.jordan.wordfindify.utils.KTestWait
-import io.sniffy.socket.DisableSockets
-import io.sniffy.test.junit.SniffyRule
-import org.junit.Rule
-import org.junit.Test
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-import org.robolectric.annotation.LooperMode
-
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -36,10 +18,29 @@ import org.robolectric.annotation.LooperMode
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify
+
+import android.os.Build
+import com.araujo.jordan.wordfindify.models.WordAvailable
+import com.araujo.jordan.wordfindify.presenter.requests.DataMuseAPI
+import com.araujo.jordan.wordfindify.utils.KTestWait
+import io.sniffy.socket.DisableSockets
+import io.sniffy.test.junit.SniffyRule
+import org.junit.Rule
+import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.DisplayName
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.LooperMode
+
+/**
+ * Unit tests for the word API
+ * @author Jordan L. Araujo Jr. (araujojordan)
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
@@ -50,6 +51,7 @@ class WordAPIUnitTest {
     var sniffyRule = SniffyRule()
 
     @Test
+    @DisplayName("Test to get 10 words from the API")
     fun getWords() {
         val waitTest = KTestWait<List<WordAvailable>?>(3000)
         waitTest.send(DataMuseAPI().getRandomWordList("fruit", 10))
@@ -59,6 +61,7 @@ class WordAPIUnitTest {
     }
 
     @Test
+    @DisplayName("Test to check if word are random for a same category")
     fun wordsAreRandomFromSameCategory() {
         val waitTest = KTestWait<List<WordAvailable>?>(3000)
         waitTest.send(DataMuseAPI().getRandomWordList("fruit", 10))
@@ -83,6 +86,7 @@ class WordAPIUnitTest {
 
     @Test
     @DisableSockets
+    @DisplayName("Test to check if the API trowns an exception on no internet access")
     fun noInternetConnection() {
         Assertions.assertThrows(Exception::class.java) {
             val waitTest = KTestWait<List<WordAvailable>?>(3000)

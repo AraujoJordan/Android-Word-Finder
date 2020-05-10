@@ -1,3 +1,25 @@
+/**
+ * Designed and developed by Jordan Lira (@araujojordan)
+ *
+ * Copyright (C) 2020 Jordan Lira de Araujo Junior
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
 package com.araujo.jordan.wordfindify
 
 import android.content.Intent
@@ -20,7 +42,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * Instrumented tests for the game main menu
+ * It will navigate for all the options of menu of the game
+ * @author Jordan L. Araujo Jr. (araujojordan)
+ */
 @LargeTest
 @RunWith(androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner::class)
 class MenuInstrumentedTest {
@@ -73,6 +99,24 @@ class MenuInstrumentedTest {
             textClick("Easy")
             repeat(LevelBuilder().getLevels().size) {
                 assertTrue(textExists("${it + 1}"))
+            }
+        }
+    }
+
+    @Test
+    fun testAccessAllLevelsAndDifficulties() {
+        launchApp()
+        uiDevice().apply {
+            StorageUtils().savePlayer(activityRule.activity, Player(12))
+            textClick("Play")
+            arrayOf("Easy", "Medium", "Hard").forEach { difficulty ->
+                textClick(difficulty)
+                repeat(LevelBuilder().getLevels().size) {
+                    textClick("${it + 1}")
+                    assertTrue(textExists("Level ${it + 1}", 8000))
+                    pressBack()
+                }
+                pressBack()
             }
         }
     }

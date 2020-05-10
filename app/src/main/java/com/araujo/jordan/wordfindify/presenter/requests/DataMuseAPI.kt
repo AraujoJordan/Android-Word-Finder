@@ -1,14 +1,3 @@
-package com.araujo.jordan.wordfindify.presenter.requests
-
-
-import android.util.Log
-import com.araujo.jordan.wordfindify.models.WordAvailable
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
-import kotlin.random.Random
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -29,13 +18,30 @@ import kotlin.random.Random
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify.presenter.requests
+
+
+import android.util.Log
+import com.araujo.jordan.wordfindify.models.WordAvailable
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONArray
+import org.json.JSONObject
+import kotlin.random.Random
+
+/**
+ * Presenter that make the Network requests to the Datamuse API
+ * @author Jordan L. Araujo Jr. (araujojordan)
  */
 class DataMuseAPI {
 
+    /**
+     * Make a OkHttp request to the Datamuse API to get a list of words based on given category
+     * @param subject category of the word list to be searched
+     * @param size size of the desired list
+     */
     fun getRandomWordList(subject: String, size: Int = 6): List<WordAvailable> {
 //        suspendCoroutine {
 

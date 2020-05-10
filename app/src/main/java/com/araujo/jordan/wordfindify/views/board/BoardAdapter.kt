@@ -1,21 +1,3 @@
-package com.araujo.jordan.wordfindify.views.board
-
-import android.content.Context
-import android.media.MediaPlayer
-import android.view.HapticFeedbackConstants
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.recyclerview.widget.RecyclerView
-import com.araujo.jordan.wordfindify.R
-import com.araujo.jordan.wordfindify.models.BoardChararacter
-import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
-import com.araujo.jordan.wordfindify.utils.bounceAnimation
-import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectReceiver
-import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectTouchListener
-import com.araujo.jordan.wordfindify.utils.dragListener.Mode
-import kotlinx.android.synthetic.main.item_board.view.*
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -36,21 +18,45 @@ import kotlinx.android.synthetic.main.item_board.view.*
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
  */
-class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
+
+package com.araujo.jordan.wordfindify.views.board
+
+import android.content.Context
+import android.media.MediaPlayer
+import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.recyclerview.widget.RecyclerView
+import com.araujo.jordan.wordfindify.R
+import com.araujo.jordan.wordfindify.models.BoardCharacter
+import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
+import com.araujo.jordan.wordfindify.utils.bounceAnimation
+import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectReceiver
+import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectTouchListener
+import com.araujo.jordan.wordfindify.utils.dragListener.Mode
+import kotlinx.android.synthetic.main.item_board.view.*
+
+/**
+ * Characters Board Adapter to the RecycleView
+ * @author Jordan L. Araujo Jr. (araujojordan)
+ */
+class BoardAdapter(
+    context: Context,
+    private val presenter: BoardPresenter,
+    val boardSize: Int = 10
+) :
     RecyclerView.Adapter<BoardAdapter.ViewHolder>(), DragSelectReceiver {
 
-    var grid = ArrayList<ArrayList<BoardChararacter>>()
+    var grid = ArrayList<ArrayList<BoardCharacter>>()
     val touchListener = DragSelectTouchListener.create(context, this) {
         disableAutoScroll()
         mode = Mode.PATH
     }
 
-    fun updateGrid(grid: ArrayList<ArrayList<BoardChararacter>>) {
+    /** Update any changed into the grid **/
+    fun updateGrid(grid: ArrayList<ArrayList<BoardCharacter>>) {
         this.grid = grid
         notifyDataSetChanged()
         touchListener.setIsActive(true)
@@ -66,8 +72,13 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
             LayoutInflater.from(parent.context),
             parent
         )
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(grid[position % 10][if (position < 10) 0 else position / 10], grid)
+        holder.bind(
+            grid[position % boardSize][if (position < boardSize) 0 else position / boardSize],
+            grid
+        )
+
     override fun getItemCount(): Int = grid.size * grid.size
     override fun isIndexSelectable(index: Int) = true
 
@@ -78,17 +89,20 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
     }
 
     override fun isSelected(index: Int) =
-        grid[index % 10][if (index < 10) 0 else index / 10].isOnSelection
+        grid[index % boardSize][if (index < boardSize) 0 else index / boardSize].isOnSelection
 
     override fun setSelected(index: Int, selected: Boolean) {
-        grid[index % 10][index / 10].isOnSelection = true
-        presenter.addCharacter(grid[index % 10][if (index < 10) 0 else index / 10])
+        grid[index % boardSize][index / boardSize].isOnSelection = true
+        presenter.addCharacter(grid[index % boardSize][if (index < boardSize) 0 else index / boardSize])
         notifyItemChanged(index)
     }
 
     override fun getItemId(position: Int) = position.toLong()
     override fun getItemViewType(position: Int) = position
 
+    /**
+     * ViewHOlder that represent a character of the board table
+     */
     class ViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.item_board, parent, false)) {
 
@@ -113,7 +127,10 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
             )
         }
 
-        fun bind(boardCharacter: BoardChararacter, grid: ArrayList<ArrayList<BoardChararacter>>) {
+        /**
+         * Bind BoardCharacter in the TextView
+         */
+        fun bind(boardCharacter: BoardCharacter, grid: ArrayList<ArrayList<BoardCharacter>>) {
 
             boardElement.text = boardCharacter.char
 
@@ -146,8 +163,12 @@ class BoardAdapter(context: Context, private val presenter: BoardPresenter) :
             }
         }
 
-
-        fun playNote(ctx: Context?, grid: ArrayList<ArrayList<BoardChararacter>>) {
+        /**
+         * Play sound based on many elements are selected in the board
+         * @param ctx context used to retrieve and play the sound from resources
+         * @param grid gaming board
+         */
+        fun playNote(ctx: Context?, grid: ArrayList<ArrayList<BoardCharacter>>) {
 
             if (grid.isEmpty() || ctx == null) return
 

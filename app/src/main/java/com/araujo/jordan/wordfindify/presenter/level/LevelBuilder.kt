@@ -1,7 +1,3 @@
-package com.araujo.jordan.wordfindify.presenter.level
-
-import com.araujo.jordan.wordfindify.models.Level
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -22,10 +18,15 @@ import com.araujo.jordan.wordfindify.models.Level
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify.presenter.level
+
+import com.araujo.jordan.wordfindify.models.Level
+
+/**
+ * Presenter that generate game levels
+ * @author Jordan L. Araujo Jr. (araujojordan)
  */
 class LevelBuilder {
 
@@ -44,6 +45,13 @@ class LevelBuilder {
         Level(12, "history")
     )
 
+    /**
+     * Get levels (levels are read-only)
+     */
     fun getLevels() = levels
+
+    /**
+     * Get category of a given level
+     */
     fun getCategory(level: Int) = levels.firstOrNull { it.level == level }?.category ?: "Shopify"
 }

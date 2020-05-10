@@ -1,5 +1,3 @@
-package com.araujo.jordan.wordfindify.models
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -20,9 +18,14 @@ package com.araujo.jordan.wordfindify.models
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
+ */
+
+package com.araujo.jordan.wordfindify.models
+
+/**
+ * Model class that represent a player
+ * @author Jordan L. Araujo Jr. (araujojordan)
+ * @param level level that user already passed
+ *
  */
 data class Player(var level: Int = 1)

@@ -1,5 +1,3 @@
-package com.araujo.jordan.wordfindify.models
-
 /**
  * Designed and developed by Jordan Lira (@araujojordan)
  *
@@ -20,12 +18,20 @@ package com.araujo.jordan.wordfindify.models
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * KtList is a RecyclerView.Adapter implementation that make easier to implement hard stuffs like
- * HeaderView, EmptyView, InfiniteScroll and so on. It will also make it easy to implement the
- * adapter itself as you don't need to implement ViewHolders and others boilerplate methods won't
- * change in most of implementations.
  */
-data class BoardChararacter(
+
+package com.araujo.jordan.wordfindify.models
+
+/**
+ * Model class that represent a character in the board
+ *
+ * @author Jordan L. Araujo Jr. (araujojordan)
+ * @param char The char itself in a string (so it easier to concatenate and generate string word)
+ * @param position the position where index 0 is X and index 1 is Y.
+ * @param isOnSelection is used to show animations on board when swiping
+ * @param selected the char was already selected in a previously word
+ */
+data class BoardCharacter(
     var char: String,
     val position: Array<Int>,
     var isOnSelection: Boolean = false,
