@@ -4,11 +4,13 @@ An incredible Word Finder game fully made in Kotlin
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/60794f003b48491a87ee80e4a5f66e3e)](https://app.codacy.com/manual/AraujoJordan/Android-Word-Finder?utm_source=github.com&utm_medium=referral&utm_content=AraujoJordan/Android-Word-Finder&utm_campaign=Badge_Grade_Dashboard)
 [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/AraujoJordan/Android-Word-Finder/blob/master/LICENSE)
+![Lines of Code](https://tokei.rs/b1/github/AraujoJordan/Android-Word-Finder?category=code)
 [![GitHub release](https://img.shields.io/badge/release-1.0-blue)](https://github.com/AraujoJordan/Android-Word-Finder/releases/)
+
 
 Wordify is an amazing Word Finder game.
 
-## Photos
+## 📷 Photos
 
 <p float="left" align="center">
     <img src="./doc/menuTitle.gif" width="200"/>
@@ -16,7 +18,7 @@ Wordify is an amazing Word Finder game.
     <img src="./doc/win.gif" width="200"/>
 </p>
 
-## Objective
+## 📋 Objective
 
 Build an Android app that displays a word finder board that can be found swiping over words
 
@@ -33,7 +35,7 @@ Those below are the requirements and the bonus itens that are included in the ap
 9.  Feel free to add any additional features you can think of. (Swiping sound effects and countdown timer) :white_check_mark:
 10. Allow the user to find the words by swiping over the words. :white_check_mark:
 
-## Extras
+## 🎉 Extras
 
 1.  Guarantee that source-code is building fine. [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
 2.  Difficulty Chooser (Countdown Timer)
@@ -42,8 +44,35 @@ Those below are the requirements and the bonus itens that are included in the ap
 6.  12 Different Levels
 7.  Random words from [Datamuse API](https://www.datamuse.com/api/)
 
-## APK Link
+## ⬇️ Download the APK
 
-In case of some problems found to build the app, you can use this link to download the apk.
+The latest project build APK can be found at this Github repository [release page](https://github.com/AraujoJordan/Android-Word-Finder/releases/).
 
-![Wordify Apk](https://github.com/AraujoJordan/Android-Word-Finder/releases/latest/download/app-debug.apk)
+You can also download the latest APK directly from there using this link: ![Wordify Apk](https://github.com/AraujoJordan/Android-Word-Finder/releases/latest/download/app-debug.apk).
+
+## 📄 License
+
+```
+MIT License
+
+Copyright (c) 2020 Jordan L. A. Junior
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
