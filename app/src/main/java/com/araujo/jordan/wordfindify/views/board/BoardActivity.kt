@@ -26,7 +26,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -51,7 +50,6 @@ import kotlinx.android.synthetic.main.item_words.view.*
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
-import java.util.concurrent.TimeUnit
 
 /**
  * Main Activity of the Game Board
@@ -67,6 +65,7 @@ class BoardActivity : AppCompatActivity(), BoardListener {
             val itemStrikethough = itemView.itemStrikethough
 
             textView.text = word.word
+            textView.contentDescription = word.word
 
             if (word.strikethrough) {
                 if (!word.didAnimation) {
@@ -87,9 +86,6 @@ class BoardActivity : AppCompatActivity(), BoardListener {
             }
         }
     }
-
-    private var countDownTimer: CountDownTimer? = null
-    private var countDownMil = 300000L
 
     //Necessary for rotation
     private var activityBoardSelectedWord: TextView? = null
@@ -115,7 +111,6 @@ class BoardActivity : AppCompatActivity(), BoardListener {
             boardPresenter
         )
         linkBoard()
-
         reset()
     }
 
@@ -129,10 +124,8 @@ class BoardActivity : AppCompatActivity(), BoardListener {
         activityBoardAvailableWordsGrid = null
         activityBoardResetButton = null
         activityBoardTimer = null
-        countDownTimer?.cancel()
-        countDownTimer = null
+        boardPresenter.onDestroy()
     }
-
 
     override fun updateSelectedWord(
         selectingWord: ArrayList<BoardCharacter>?,
@@ -188,8 +181,15 @@ class BoardActivity : AppCompatActivity(), BoardListener {
     /**
      * Automatically show GameOver screen
      */
-    fun onLose() {
+    override fun onLose() {
         showDialog(false)
+    }
+
+    /**
+     * Update the bottom clock time
+     */
+    override fun updateClockTime(clock: String) {
+        activityBoardTimer?.text = clock
     }
 
     /**
@@ -201,20 +201,20 @@ class BoardActivity : AppCompatActivity(), BoardListener {
         boardLoading?.visibility = View.VISIBLE
         Thread {
             try {
-                boardPresenter.reset(
-                    LevelBuilder().getCategory(
-                        intent.getIntExtra("level", 1)
-                    )
-                )
-                Log.d(
-                    "BoardActivity",
-                    "boardPresenter.allWords: " + boardPresenter.allWords.toString()
-                )
+                boardPresenter.reset(getLevel())
                 updateBoard()
             } catch (err: Exception) {
                 showError(err.message.toString())
             }
         }.start()
+    }
+
+    private fun getLevel(): String {
+        if (intent.hasExtra("test"))
+            return "test"
+        return LevelBuilder().getCategory(
+            intent.getIntExtra("level", 1)
+        )
     }
 
     private fun showError(errorMessage: String) = runOnUiThread {
@@ -232,55 +232,31 @@ class BoardActivity : AppCompatActivity(), BoardListener {
         wordsAvailableAdapter.setList(boardPresenter.allWords)
         boardAdapter?.updateGrid(boardPresenter.board)
 
-        countDownMil = when (intent.getStringExtra("difficulty")) {
-            "easy" -> 300000L
-            "medium" -> 150000L
-            "hard" -> 120000L
-            else -> 300000L
-        }
-
-        countDownTimer?.cancel()
-        countDownTimer = object : CountDownTimer(countDownMil, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                countDownMil -= 1000
-                activityBoardTimer?.text = String.format(
-                    "%02d:%02d",
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60,
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
-                )
-            }
-
-            override fun onFinish() {
-                if (boardPresenter.allWords.count { !it.strikethrough } > 0)
-                    onLose()
-            }
-        }
-        countDownTimer?.start()
+        boardPresenter.startCounter(getDifficulty())
         boardLoading?.visibility = View.GONE
         activityBoardAvailableWordsGrid?.visibility = View.VISIBLE
     }
 
+    private fun getDifficulty(): String {
+        if (intent.hasExtra("difficulty"))
+            return intent.getStringExtra("difficulty") ?: "hard"
+        return "hard"
+    }
 
     private fun showDialog(victory: Boolean, msg: String? = null) {
         WinLoseDialog(this, victory, msg)
     }
 
     override fun updateWordList(words: ArrayList<WordAvailable>) {
-//        if (words.count { it.strikethrough } > wordsAvailableAdapter.words.count { it.strikethrough }) {
-
         MediaPlayer.create(this, R.raw.levelup).apply {
             setOnPreparedListener {
                 setVolume(1f, 1f)
                 it.start()
             }
         }
-//        }
         wordsAvailableAdapter.setList(words)
     }
 
-    /**
-     * Link the board view (RecycleViews, Available word list...)  with the BoardPresenter
-     */
     private fun linkBoard(localPresenter: BoardPresenter? = null) {
 
         //necessary linking after rotation
@@ -303,9 +279,6 @@ class BoardActivity : AppCompatActivity(), BoardListener {
 
         activityBoardAvailableWordsGrid?.adapter?.notifyDataSetChanged()
         activityBoardGrid?.adapter?.notifyDataSetChanged()
-//
-//        activityBoardAvailableWordsGrid?.layoutManager =
-//            GridLayoutManager(this, resources.getInteger(R.integer.wordlist_spancount))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

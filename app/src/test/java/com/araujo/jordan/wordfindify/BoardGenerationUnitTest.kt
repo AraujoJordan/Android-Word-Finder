@@ -22,33 +22,43 @@
 
 package com.araujo.jordan.wordfindify
 
+import android.os.Build
 import com.araujo.jordan.wordfindify.models.WordAvailable
 import com.araujo.jordan.wordfindify.presenter.board.BoardBuilder
 import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
-import org.opentest4j.AssertionFailedError
+import com.araujo.jordan.wordfindify.utils.sharedExamples.BoardSharedExamples
+import junit.framework.TestCase.assertTrue
+import org.junit.Test
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.assertTimeoutPreemptively
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.LooperMode
 import java.time.Duration.ofSeconds
-import kotlin.random.Random
 
 /**
  * Unit Test for the board generation
  * @author Jordan L. Araujo Jr. (araujojordan)
  */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
+@LooperMode(LooperMode.Mode.PAUSED)
 class BoardGenerationUnitTest {
 
     @Test
+    @DisplayName("Generate one board with random characters")
     fun generateOneBoard() {
         assertTimeoutPreemptively(ofSeconds(3)) {
             val boardPresenter = BoardBuilder(BoardPresenter(null).buildEmptyBoard())
             boardPresenter.build(
                 arrayOf(
-                    WordAvailable(randomString()),
-                    WordAvailable(randomString()),
-                    WordAvailable(randomString()),
-                    WordAvailable(randomString()),
-                    WordAvailable(randomString()),
-                    WordAvailable(randomString())
+                    WordAvailable(BoardSharedExamples.randomString()),
+                    WordAvailable(BoardSharedExamples.randomString()),
+                    WordAvailable(BoardSharedExamples.randomString()),
+                    WordAvailable(BoardSharedExamples.randomString()),
+                    WordAvailable(BoardSharedExamples.randomString()),
+                    WordAvailable(BoardSharedExamples.randomString())
                 )
             )
 //            println(boardPresenter.board)
@@ -57,18 +67,19 @@ class BoardGenerationUnitTest {
     }
 
     @Test
+    @DisplayName("Generate 1000 board with random characters")
     fun generateRandomBoardsStressTest() {
         assertTimeoutPreemptively(ofSeconds(40)) {
             repeat(1000) {
                 val boardPresenter = BoardBuilder(BoardPresenter(null).buildEmptyBoard())
                 boardPresenter.build(
                     arrayOf(
-                        WordAvailable(randomString()),
-                        WordAvailable(randomString()),
-                        WordAvailable(randomString()),
-                        WordAvailable(randomString()),
-                        WordAvailable(randomString()),
-                        WordAvailable(randomString())
+                        WordAvailable(BoardSharedExamples.randomString()),
+                        WordAvailable(BoardSharedExamples.randomString()),
+                        WordAvailable(BoardSharedExamples.randomString()),
+                        WordAvailable(BoardSharedExamples.randomString()),
+                        WordAvailable(BoardSharedExamples.randomString()),
+                        WordAvailable(BoardSharedExamples.randomString())
                     )
                 )
 //                println(boardPresenter.board)
@@ -77,41 +88,4 @@ class BoardGenerationUnitTest {
             assertTrue(true)
         }
     }
-
-    @Test
-    fun impossibleBoardGeneration() {
-        assertThrows(AssertionFailedError::class.java) {
-            assertTimeoutPreemptively(ofSeconds(5)) {
-                val boardPresenter = BoardBuilder(BoardPresenter(null).buildEmptyBoard())
-                boardPresenter.build(
-                    arrayOf(
-                        WordAvailable("aaaaaaaaaa"),
-                        WordAvailable("bbbbbbbbbb"),
-                        WordAvailable("cccccccccc"),
-                        WordAvailable("dddddddddd"),
-                        WordAvailable("eeeeeeeeee"),
-                        WordAvailable("ffffffffff"),
-                        WordAvailable("gggggggggg"),
-                        WordAvailable("hhhhhhhhhh"),
-                        WordAvailable("iiiiiiiiii"),
-                        WordAvailable("jjjjjjjjjj"),
-                        WordAvailable("llllllllll")
-                    )
-                )
-//                println(boardPresenter.board)
-                fail("This should not be reach")
-            }
-        }
-    }
-
-    private fun randomString(stringLength: Int = Random.nextInt(3, 10)): String {
-        val list = "abcdefghijklmnopqrstuvwxyz".toCharArray()
-        var randomS = ""
-        for (i in 1..stringLength) {
-            randomS += list[getRandomNumber(0, list.size - 1)]
-        }
-        return randomS
-    }
-
-    private fun getRandomNumber(min: Int, max: Int) = Random.nextInt((max - min) + 1) + min
 }

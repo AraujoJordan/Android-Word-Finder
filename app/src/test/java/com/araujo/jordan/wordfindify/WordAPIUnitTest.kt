@@ -96,4 +96,16 @@ class WordAPIUnitTest {
             assertTrue(false)
         }
     }
+
+    @Test
+    @DisplayName("Test DatamuseAPI with a strange category that doesn't give enough words")
+    fun notEnoughWords() {
+        Assertions.assertThrows(Exception::class.java) {
+            val waitTest = KTestWait<List<WordAvailable>?>(3000)
+            waitTest.send(DataMuseAPI().getRandomWordList("nowords", 10))
+            val list = waitTest.receive()
+            println(list)
+            assertTrue(list?.size == 10)
+        }
+    }
 }

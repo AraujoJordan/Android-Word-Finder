@@ -45,7 +45,8 @@ import kotlinx.android.synthetic.main.item_board.view.*
 class BoardAdapter(
     context: Context,
     private val presenter: BoardPresenter,
-    val boardSize: Int = 10
+    val boardSize: Int = 10,
+    val isTest: Boolean = false
 ) :
     RecyclerView.Adapter<BoardAdapter.ViewHolder>(), DragSelectReceiver {
 
@@ -76,7 +77,9 @@ class BoardAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(
             grid[position % boardSize][if (position < boardSize) 0 else position / boardSize],
-            grid
+            grid,
+            position,
+            isTest
         )
 
     override fun getItemCount(): Int = grid.size * grid.size
@@ -130,8 +133,13 @@ class BoardAdapter(
         /**
          * Bind BoardCharacter in the TextView
          */
-        fun bind(boardCharacter: BoardCharacter, grid: ArrayList<ArrayList<BoardCharacter>>) {
+        fun bind(
+            boardCharacter: BoardCharacter, grid: ArrayList<ArrayList<BoardCharacter>>
+            , pos: Int, isTest: Boolean
+        ) {
 
+            if (isTest && pos < 4)
+                boardElement.contentDescription = "test-$pos"
             boardElement.text = boardCharacter.char
 
             if (boardCharacter.selected) {

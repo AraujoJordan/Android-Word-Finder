@@ -64,6 +64,16 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardCharacter>>) {
         //clear previously board
         reset(wordList)
 
+        //Check for test and create a test board
+        if (wordList.size == 1 && wordList.first().word == "Test") {
+            board[0][0].char = "T"
+            board[1][0].char = "E"
+            board[2][0].char = "S"
+            board[3][0].char = "T"
+            randomEmptySpaces()
+            return
+        }
+
         //add words in board
         var attempt = 0
         while (wordsAvailable.isNotEmpty()) {
@@ -105,7 +115,10 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardCharacter>>) {
             }
         }
 
-        //Add random characters in empty spaces
+        randomEmptySpaces()
+    }
+
+    private fun randomEmptySpaces() {
         for (x in 0 until width)
             for (y in 0 until height)
                 if (board[x][y].char.isEmpty()) board[x][y].char = source.random().toString()

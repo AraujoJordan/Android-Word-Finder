@@ -26,8 +26,10 @@ import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import com.araujo.jordan.wordfindify.models.Player
+import com.araujo.jordan.wordfindify.presenter.level.LevelBuilder
 import com.araujo.jordan.wordfindify.presenter.storage.StorageUtils
 import org.junit.Test
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.runner.RunWith
@@ -46,12 +48,24 @@ import org.robolectric.annotation.LooperMode
 class StorageUnitTest {
 
     @Test
-    fun getPlayer() {
+    @DisplayName("Get Empty player")
+    fun getEmptyPlayer() {
         val ctx = ApplicationProvider.getApplicationContext() as Context
         val stUtils = StorageUtils()
         stUtils.deleteData(ctx)
         val player = stUtils.getPlayer(ctx)
         assertTrue(player.level == 1)
+    }
+
+    @Test
+    @DisplayName("Get Stored player level 5")
+    fun getPlayer() {
+        val ctx = ApplicationProvider.getApplicationContext() as Context
+        val stUtils = StorageUtils()
+        stUtils.deleteData(ctx)
+        stUtils.savePlayer(ctx, Player(5))
+        val player = stUtils.getPlayer(ctx)
+        assertTrue(player.level == 5)
 
     }
 
@@ -65,5 +79,24 @@ class StorageUnitTest {
         stUtils.savePlayer(ctx, Player(5))
         val player = stUtils.getPlayer(ctx)
         assertTrue(player.level == 5)
+    }
+
+    @Test
+    @DisplayName("Fail to save user with strange level")
+    fun savePlayerFail() {
+
+        val ctx = ApplicationProvider.getApplicationContext() as Context
+        val stUtils = StorageUtils()
+
+        Assertions.assertThrows(Exception::class.java) {
+            stUtils.deleteData(ctx)
+            stUtils.savePlayer(ctx, Player(-1))
+            assertTrue(true)
+        }
+        Assertions.assertThrows(Exception::class.java) {
+            stUtils.deleteData(ctx)
+            stUtils.savePlayer(ctx, Player(LevelBuilder().getLevels().size + 1))
+            assertTrue(true)
+        }
     }
 }

@@ -55,13 +55,12 @@ class DataMuseAPI {
 
         while (list.size < size) {
             val json = jsonArray.remove(Random.nextInt(jsonArray.length())) as? JSONObject
-
             val word = json?.getString("word") ?: "Fail"
             if (word.contains(' ') || word.contains('-') || word.length > 10) continue
-
             list.add(WordAvailable(word))
             Log.d("DataMuseAPI", "getRandomWordList() $word")
         }
+        require(list.size == size)
         return list
     }
 }

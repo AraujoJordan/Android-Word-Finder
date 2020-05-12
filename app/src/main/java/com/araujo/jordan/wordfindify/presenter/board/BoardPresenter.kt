@@ -22,10 +22,12 @@
 
 package com.araujo.jordan.wordfindify.presenter.board
 
+import android.os.CountDownTimer
 import com.araujo.jordan.wordfindify.models.BoardCharacter
 import com.araujo.jordan.wordfindify.models.WordAvailable
 import com.araujo.jordan.wordfindify.presenter.requests.DataMuseAPI
 import java.io.Serializable
+import java.util.concurrent.TimeUnit
 import kotlin.math.max
 import kotlin.math.min
 
@@ -38,6 +40,8 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
     var board = ArrayList<ArrayList<BoardCharacter>>()
     var allWords = ArrayList<WordAvailable>()
     var selectedWord = ArrayList<BoardCharacter>()
+    private var countDownTimer: CountDownTimer? = null
+    private var countDownMil = 300000L
 
     /**
      * Add Character to update the user selection
@@ -51,10 +55,10 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
 
     private fun availableWords() = ArrayList(allWords.filter { !it.strikethrough })
     private fun containsAvailable(word: String) =
-        availableWords().indexOfFirst { it.word == word } > -1
+        availableWords().indexOfFirst { it.word.equals(word, true) } > -1
 
     private fun remove(word: String) {
-        val wordIndex = allWords.indexOfFirst { it.word == word }
+        val wordIndex = allWords.indexOfFirst { it.word.equals(word, true) }
         if (wordIndex >= 0)
             allWords[wordIndex].strikethrough = true
     }
@@ -72,6 +76,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
             }
             grid.add(line)
         }
+        board = grid
         return grid
     }
 
@@ -104,9 +109,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
         boardEvents?.updateSelectedWord()
     }
 
-    private fun acceptWord(
-        selectingWord: ArrayList<BoardCharacter>
-    ) {
+    private fun acceptWord(selectingWord: ArrayList<BoardCharacter>) {
         val wordSelected = getString(selectingWord)
         removeWord(wordSelected)
         boardEvents?.updateWordList(allWords)
@@ -115,22 +118,16 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
             it.selected = true
         }
 
-        if (availableWords().size == 0)
+        if (availableWords().size == 0) {
             boardEvents?.onVictory()
+        }
         deselectWord()
     }
 
-    /**
-     * Set the category of the words
-     * This method can call a API request to get words from Datamuse api or can use
-     * a fixed word list
-     *
-     * @param category The category of the words
-     */
     private fun setWordsCategory(category: String) {
-        if (category == "Shopify")
-            allWords.addAll(
-                arrayOf(
+        allWords.addAll(
+            when (category) {
+                "Shopify" -> listOf(
                     WordAvailable("Swift"),
                     WordAvailable("Kotlin"),
                     WordAvailable("ObjectiveC"),
@@ -138,9 +135,10 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
                     WordAvailable("Java"),
                     WordAvailable("Mobile")
                 )
-            )
-        else
-            allWords.addAll(DataMuseAPI().getRandomWordList(category))
+                "test" -> listOf(WordAvailable("Test"))
+                else -> DataMuseAPI().getRandomWordList(category)
+            }
+        )
     }
 
     /**
@@ -165,9 +163,6 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
             remove(wordToRemove.reversed())
     }
 
-    /**
-     * Get string from characters selected
-     */
     private fun getString(wordSelected: ArrayList<BoardCharacter>): String {
         var word = ""
         wordSelected.forEach {
@@ -214,6 +209,49 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
         return true
     }
 
+    /**
+     * Destroy view related component connected with this class
+     */
+    fun onDestroy() {
+        countDownTimer?.cancel()
+        countDownTimer = null
+    }
+
+    /**
+     * Start Countdown based on the difficulty of the game
+     * @param difficulty defines the difficulty. For now, easy, medium and hard are available.
+     * @return Return the countdown itself. Useful for testing
+     */
+    fun startCounter(difficulty: String?): CountDownTimer? {
+        countDownMil = when (difficulty) {
+            "easy" -> 300000L
+            "medium" -> 150000L
+            "hard" -> 120000L
+            "test" -> 3000L
+            else -> 300000L
+        }
+
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(countDownMil, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                countDownMil -= 1000
+                boardEvents?.updateClockTime(
+                    String.format(
+                        "%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60,
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+                    )
+                )
+            }
+
+            override fun onFinish() {
+                if (allWords.count { !it.strikethrough } > 0)
+                    boardEvents?.onLose()
+            }
+        }
+        countDownTimer?.start()
+        return countDownTimer
+    }
 
 }
 
@@ -228,6 +266,11 @@ interface BoardListener {
     fun onVictory()
 
     /**
+     * The board presenter will trigger this method in a timeout
+     */
+    fun onLose()
+
+    /**
      * Update word list of the UI
      */
     fun updateWordList(words: ArrayList<WordAvailable>)
@@ -239,4 +282,9 @@ interface BoardListener {
         selectingWord: ArrayList<BoardCharacter>? = null,
         acceptedWord: Boolean = false
     )
+
+    /**
+     * Update bottom clock time
+     */
+    fun updateClockTime(clock: String)
 }

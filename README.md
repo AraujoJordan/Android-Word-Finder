@@ -52,7 +52,7 @@ You can also download the latest APK directly from there using this link: ![Word
 
 ## 📄 License
 
-```
+```text
 MIT License
 
 Copyright (c) 2020 Jordan L. A. Junior
@@ -75,4 +75,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
