@@ -5,7 +5,7 @@ An incredible Word Finder game fully made in Kotlin
 [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/AraujoJordan/Android-Word-Finder/blob/master/LICENSE)
 ![Lines of Code](https://tokei.rs/b1/github/AraujoJordan/Android-Word-Finder?category=code)
-[![GitHub release](https://img.shields.io/badge/release-1.0-blue)](https://github.com/AraujoJordan/Android-Word-Finder/releases/)
+[![GitHub release](https://img.shields.io/badge/release-2.0.1-blue)](https://github.com/AraujoJordan/Android-Word-Finder/releases/)
 
 
 Wordify is an amazing Word Finder game.
