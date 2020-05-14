@@ -96,6 +96,7 @@ class BoardPresenter(private val boardEvents: BoardListener?) : Serializable {
             acceptWord(selectedWord)
             boardEvents?.updateSelectedWord(selectedWord, true)
         } else {
+            selectedWord.forEach { it.isOnSelection = false }
             boardEvents?.updateSelectedWord(selectedWord)
         }
         deselectWord()

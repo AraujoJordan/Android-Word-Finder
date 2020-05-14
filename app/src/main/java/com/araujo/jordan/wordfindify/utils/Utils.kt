@@ -27,6 +27,7 @@ import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
 
+
 /**
  * Do a bouncing animation one time only in a view
  */

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/boardItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:layout_marginTop="9dp"
     android:layout_marginBottom="9dp"
-    android:layout_gravity="center"
     android:layout_weight="1"
-    app:autoSizeTextType="uniform"
     android:fontFamily="@font/uomopiccolo"
     android:gravity="center"
     android:textColor="@color/unselectCharColor"
     android:textSize="28sp"
-    tools:text="M" />
+    app:autoSizeTextType="uniform"
+    tools:text="M"
+    tools:textColor="@color/colorAccent" />

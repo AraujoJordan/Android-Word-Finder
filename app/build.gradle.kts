@@ -59,19 +59,31 @@ android {
         isIncludeInstrumentationCoverageInMergedReport = true
     }
 
+
+
     testOptions {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
-        unitTests.isIncludeAndroidResources = true
-        unitTests.isReturnDefaultValues = true
-        unitTests.all(KotlinClosure1<Any, Test>({
-            (this as Test).also {
-                testLogging {
-                    events("passed", "skipped", "failed", "standardOut", "standardError")
-                    showStandardStreams = true
-                    maxHeapSize = "1024m"
+        unitTests.apply {
+            isReturnDefaultValues = true
+            isIncludeAndroidResources = true
+            all(KotlinClosure1<Any, Test>({
+                (this as? Test)?.also {
+                    exclude(
+                        "**/R.class",
+                        "**/R$*.class",
+                        "**/BuildConfig.*",
+                        "**/Manifest*.*",
+                        "**/*Test*.*",
+                        "android/**/*.*"
+                    )
+                    testLogging {
+                        events("passed", "skipped", "failed", "standardOut", "standardError")
+                        showStandardStreams = true
+                        maxHeapSize = "1024m"
+                    }
                 }
-            }
-        }, this))
+            }, this))
+        }
     }
 }
 
@@ -129,5 +141,4 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0") {
         exclude(group = "com.android.support", module = "support-annotations")
     }
-
 }

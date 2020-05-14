@@ -22,6 +22,8 @@
 
 package com.araujo.jordan.wordfindify.models
 
+import java.util.*
+
 /**
  * Model class that represent a character in the board
  *
@@ -35,7 +37,17 @@ data class BoardCharacter(
     var char: String,
     val position: Array<Int>,
     var isOnSelection: Boolean = false,
-    var selected: Boolean = false
+    var selected: Boolean = false,
+    var id: Long = Date().time
 ) {
+    /**
+     * Postion in X terms
+     */
+    fun x() = position[1]
+
+    /**
+     * Position in Y terms
+     */
+    fun y() = position[0]
     override fun toString() = char
 }

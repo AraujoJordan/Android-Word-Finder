@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.araujo.jordan.wordfindify.R
 import com.araujo.jordan.wordfindify.models.BoardCharacter
 import com.araujo.jordan.wordfindify.presenter.board.BoardPresenter
+import com.araujo.jordan.wordfindify.utils.LineSelectionHelper
 import com.araujo.jordan.wordfindify.utils.bounceAnimation
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectReceiver
 import com.araujo.jordan.wordfindify.utils.dragListener.DragSelectTouchListener
@@ -43,7 +44,7 @@ import kotlinx.android.synthetic.main.item_board.view.*
  * @author Jordan L. Araujo Jr. (araujojordan)
  */
 class BoardAdapter(
-    context: Context,
+    var context: Context? = null,
     private val presenter: BoardPresenter,
     val boardSize: Int = 10,
     val isTest: Boolean = false
@@ -51,10 +52,11 @@ class BoardAdapter(
     RecyclerView.Adapter<BoardAdapter.ViewHolder>(), DragSelectReceiver {
 
     var grid = ArrayList<ArrayList<BoardCharacter>>()
-    val touchListener = DragSelectTouchListener.create(context, this) {
+    val touchListener = DragSelectTouchListener.create(context!!, this) {
         disableAutoScroll()
         mode = Mode.PATH
     }
+    var lineSelectHelper: LineSelectionHelper? = null
 
     /** Update any changed into the grid **/
     fun updateGrid(grid: ArrayList<ArrayList<BoardCharacter>>) {
@@ -77,7 +79,6 @@ class BoardAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(
             grid[position % boardSize][if (position < boardSize) 0 else position / boardSize],
-            grid,
             position,
             isTest
         )
@@ -85,23 +86,92 @@ class BoardAdapter(
     override fun getItemCount(): Int = grid.size * grid.size
     override fun isIndexSelectable(index: Int) = true
 
+    override fun isSelected(index: Int) =
+        grid[index % boardSize][if (index < boardSize) 0 else index / boardSize].isOnSelection
+
+
     override fun releaseSelection() {
+        lineSelectHelper = null
         presenter.checkForWord()
         notifyDataSetChanged()
         touchListener.setIsActive(true)
     }
 
-    override fun isSelected(index: Int) =
-        grid[index % boardSize][if (index < boardSize) 0 else index / boardSize].isOnSelection
-
     override fun setSelected(index: Int, selected: Boolean) {
-        grid[index % boardSize][index / boardSize].isOnSelection = true
-        presenter.addCharacter(grid[index % boardSize][if (index < boardSize) 0 else index / boardSize])
-        notifyItemChanged(index)
+        val touchLetter = grid[index % boardSize][index / boardSize]
+        if (lineSelectHelper == null) {
+            lineSelectHelper = LineSelectionHelper()
+            lineSelectHelper?.addFirst(touchLetter, grid)
+            touchLetter.isOnSelection = true
+            presenter.addCharacter(touchLetter)
+            notifyItemChanged(index)
+        } else {
+            presenter.selectedWord.forEach { it.isOnSelection = false }
+            presenter.selectedWord.clear()
+            lineSelectHelper?.showLine(touchLetter)?.forEach { boardToSelect ->
+                boardToSelect.isOnSelection = true
+                presenter.addCharacter(boardToSelect)
+//                notifyItemChanged(getGridIndex(boardToSelect))
+            }
+            notifyDataSetChanged()
+            playNote(context, grid)
+        }
+    }
+
+    private fun getGridIndex(boardChar: BoardCharacter): Int {
+        repeat(100) {
+            val item = grid[it % boardSize][if (it < boardSize) 0 else it / boardSize]
+            if (item.id == boardChar.id) return it
+        }
+        return 0
+    }
+
+    /**
+     * Play sound based on many elements are selected in the board
+     * @param ctx context used to retrieve and play the sound from resources
+     * @param grid gaming board
+     */
+    fun playNote(ctx: Context?, grid: ArrayList<ArrayList<BoardCharacter>>) {
+
+        if (grid.isEmpty() || ctx == null) return
+
+        var count = 0
+        grid.forEach { it.forEach { count += if (it.isOnSelection) 1 else 0 } }
+
+        MediaPlayer.create(
+            ctx, when (count) {
+                1 -> R.raw.a3
+                2 -> R.raw.c3
+                3 -> R.raw.d3
+                4 -> R.raw.e3
+                5 -> R.raw.f3
+                6 -> R.raw.g3
+                7 -> R.raw.a4
+                8 -> R.raw.c4
+                9 -> R.raw.d4
+                10 -> R.raw.e4
+                11 -> R.raw.f4
+                12 -> R.raw.g4
+                13 -> R.raw.a5
+                14 -> R.raw.c5
+                15 -> R.raw.d5
+                16 -> R.raw.e5
+                17 -> R.raw.f5
+                else -> R.raw.g5
+            }
+        ).apply {
+            setOnPreparedListener { mediaToPlay ->
+                mediaToPlay.setVolume(1f, 1f)
+                mediaToPlay.setOnCompletionListener { mediaForRelease ->
+                    mediaForRelease.release()
+                }
+                mediaToPlay.start()
+            }
+        }
     }
 
     override fun getItemId(position: Int) = position.toLong()
-    override fun getItemViewType(position: Int) = position
+    override fun getItemViewType(position: Int) = 0
 
     /**
      * ViewHOlder that represent a character of the board table
@@ -133,10 +203,7 @@ class BoardAdapter(
         /**
          * Bind BoardCharacter in the TextView
          */
-        fun bind(
-            boardCharacter: BoardCharacter, grid: ArrayList<ArrayList<BoardCharacter>>
-            , pos: Int, isTest: Boolean
-        ) {
+        fun bind(boardCharacter: BoardCharacter, pos: Int, isTest: Boolean) {
 
             if (isTest && pos < 4)
                 boardElement.contentDescription = "test-$pos"
@@ -144,74 +211,27 @@ class BoardAdapter(
 
             if (boardCharacter.selected) {
                 if (boardElement?.textColors != removedLetterColor) {
-                    playNote(boardElement.context, grid)
                     boardElement.setTextColor(removedLetterColor)
-                    bounceAnimation(boardElement)
                 }
             } else {
                 if (boardCharacter.isOnSelection) {
                     if (boardElement.textColors != selectedColor) {
-                        playNote(boardElement.context, grid)
                         boardElement.setTextColor(selectedColor)
                         boardElement.isHapticFeedbackEnabled = true
                         boardElement.performHapticFeedback(
                             HapticFeedbackConstants.LONG_PRESS,
                             HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
                         )
-
                         bounceAnimation(boardElement)
                     }
                 } else {
-                    boardElement.setTextColor(unselectedColor)
+                    if (boardElement.textColors != unselectedColor)
+                        boardElement.setTextColor(unselectedColor)
                 }
             }
 
             if (itemView.tag == null) {
                 itemView.tag = boardCharacter
-            }
-        }
-
-        /**
-         * Play sound based on many elements are selected in the board
-         * @param ctx context used to retrieve and play the sound from resources
-         * @param grid gaming board
-         */
-        fun playNote(ctx: Context?, grid: ArrayList<ArrayList<BoardCharacter>>) {
-
-            if (grid.isEmpty() || ctx == null) return
-
-            var count = 0
-            grid.forEach { it.forEach { count += if (it.isOnSelection) 1 else 0 } }
-
-            MediaPlayer.create(
-                ctx, when (count) {
-                    1 -> R.raw.a3
-                    2 -> R.raw.c3
-                    3 -> R.raw.d3
-                    4 -> R.raw.e3
-                    5 -> R.raw.f3
-                    6 -> R.raw.g3
-                    7 -> R.raw.a4
-                    8 -> R.raw.c4
-                    9 -> R.raw.d4
-                    10 -> R.raw.e4
-                    11 -> R.raw.f4
-                    12 -> R.raw.g4
-                    13 -> R.raw.a5
-                    14 -> R.raw.c5
-                    15 -> R.raw.d5
-                    16 -> R.raw.e5
-                    17 -> R.raw.f5
-                    else -> R.raw.g5
-                }
-            ).apply {
-                setOnPreparedListener { mediaToPlay ->
-                    mediaToPlay.setVolume(1f, 1f)
-                    mediaToPlay.setOnCompletionListener { mediaForRelease ->
-                        mediaForRelease.release()
-                    }
-                    mediaToPlay.start()
-                }
             }
         }
     }

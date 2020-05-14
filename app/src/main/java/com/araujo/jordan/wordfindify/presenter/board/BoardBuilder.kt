@@ -51,8 +51,10 @@ class BoardBuilder(val board: ArrayList<ArrayList<BoardCharacter>>) {
         wordsAvailable = ArrayList()
         wordsAvailable.addAll(wordList.toList().shuffled())
         for (w in 0 until width)
-            for (h in 0 until height)
+            for (h in 0 until height) {
                 board[w][h].char = ""
+                board[w][h].id = (w * 10 + h).toLong()
+            }
     }
 
     /**
