@@ -37,10 +37,10 @@ Those below are the requirements and the bonus itens that are included in the ap
 
 ## 🎉 Extras
 
-1.  Guarantee that source-code is building fine. [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
-2.  Difficulty Chooser (Countdown Timer)
+1.  Countinous Integration using [![CircleCI](https://circleci.com/gh/AraujoJordan/Android-Word-Finder.svg?style=shield)](https://circleci.com/gh/AraujoJordan/Android-Word-Finder)
+2.  Difficulty Selection (Changes the countdown time)
 4.  Swiping in 8 Directions
-5.  JUnit5 Test cases
+5.  Unit Test cases (Junit + RoboEletric) and Instrumeted Tests (UIAutomator + [LaTest](https://github.com/AraujoJordan/LaTest/))
 6.  12 Different Levels
 7.  Random words from [Datamuse API](https://www.datamuse.com/api/)
 
