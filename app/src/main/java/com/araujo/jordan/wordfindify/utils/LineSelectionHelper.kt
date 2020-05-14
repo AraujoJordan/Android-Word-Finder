@@ -1,3 +1,25 @@
+/**
+ * Designed and developed by Jordan Lira (@araujojordan)
+ *
+ * Copyright (C) 2020 Jordan Lira de Araujo Junior
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
 package com.araujo.jordan.wordfindify.utils
 
 import android.util.Log
@@ -5,12 +27,21 @@ import com.araujo.jordan.wordfindify.models.BoardCharacter
 import kotlin.math.absoluteValue
 import kotlin.math.atan2
 
+/**
+ * Make a straight line from first to last letter selected, restricting to the 8 directions
+ * @author Jordan L. Araujo Jr. (araujojordan)
+ */
 class LineSelectionHelper {
     private var firstChar: BoardCharacter? = null
     private var lastChar: BoardCharacter? = null
     private var grid: ArrayList<ArrayList<BoardCharacter>>? = null
     private var originPoint = arrayOf<Int>()
 
+    /**
+     * Add the first letter and the grid
+     * @param boardChar first letter of the selection
+     * @param grid that will perform the selection
+     */
     fun addFirst(boardChar: BoardCharacter, grid: ArrayList<ArrayList<BoardCharacter>>) {
         require(firstChar == null)
         this.firstChar = boardChar
@@ -19,6 +50,11 @@ class LineSelectionHelper {
         Log.d("LineSelectionHelper", "ORIGINAL: x:${originPoint[1]} y:${originPoint[0]}")
     }
 
+    /**
+     * Draw a line from first letter until the boardChar letter
+     * @param boardChar last letter of the selection
+     * @return straight line from first to boardChar letter
+     */
     fun showLine(boardChar: BoardCharacter): List<BoardCharacter> {
         require(firstChar != null)
 
@@ -47,7 +83,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x() + 1, list.last().y() - 1))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list
@@ -59,7 +95,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x() + 1, list.last().y()))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list
@@ -71,7 +107,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x() + 1, list.last().y() + 1))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list
@@ -83,7 +119,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x(), list.last().y() + 1))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list
@@ -95,7 +131,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x() - 1, list.last().y() + 1))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list
@@ -107,7 +143,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x() - 1, list.last().y()))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list
@@ -119,7 +155,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x() - 1, list.last().y() - 1))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list
@@ -132,7 +168,7 @@ class LineSelectionHelper {
                     try {
                         list.add(getChar(list.last().x(), list.last().y() - 1))
                     } catch (err: Exception) {
-
+                        /** Ignore if selects to a outside letter **/
                     }
                 }
                 list

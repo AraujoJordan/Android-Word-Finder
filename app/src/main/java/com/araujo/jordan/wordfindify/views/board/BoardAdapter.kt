@@ -89,7 +89,9 @@ class BoardAdapter(
     override fun isSelected(index: Int) =
         grid[index % boardSize][if (index < boardSize) 0 else index / boardSize].isOnSelection
 
-
+    /**
+     * Release selection of all items
+     */
     override fun releaseSelection() {
         lineSelectHelper = null
         presenter.checkForWord()
@@ -97,6 +99,9 @@ class BoardAdapter(
         touchListener.setIsActive(true)
     }
 
+    /**
+     * Set selected items to paint the right words on the board
+     */
     override fun setSelected(index: Int, selected: Boolean) {
         val touchLetter = grid[index % boardSize][index / boardSize]
         if (lineSelectHelper == null) {
@@ -116,14 +121,6 @@ class BoardAdapter(
             notifyDataSetChanged()
             playNote(context, grid)
         }
-    }
-
-    private fun getGridIndex(boardChar: BoardCharacter): Int {
-        repeat(100) {
-            val item = grid[it % boardSize][if (it < boardSize) 0 else it / boardSize]
-            if (item.id == boardChar.id) return it
-        }
-        return 0
     }
 
     /**
